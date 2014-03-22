@@ -64,12 +64,12 @@ namespace WPF_Crosshair {
 			updateTimer = new Timer(OnTick, null, 0, 1000);
 			windowTitle = new Regex(configs.TargetWindowTitle, RegexOptions.Compiled);
 
-			hotKeys.RegisterHotKey(configs.ShowHideReticule);
+			hotKeys.RegisterHotKey(configs.ShowHideCrosshair);
 			hotKeys.KeyPressed += hotkeyHandler;			
 
 			ChangeIcon();
 
-			var test = new Options();
+			var test = new Options(configs);
 			test.Show();
 		}
 
@@ -111,7 +111,7 @@ namespace WPF_Crosshair {
 		}
 
 		private void hotkeyHandler(object source, KeyPressedEventArgs e) {
-			if (e.Key.First() == configs.ShowHideReticule.First()) {
+			if (e.Key.First() == configs.ShowHideCrosshair.First()) {
 				enabled = !enabled;
 				ChangeIcon();
 			}
@@ -173,7 +173,7 @@ namespace WPF_Crosshair {
 		}
 
 		private void OptionsContext_Click(object sender, RoutedEventArgs e) {
-			var test = new Options();
+			var test = new Options(configs);
 			test.Show();
 		}
 

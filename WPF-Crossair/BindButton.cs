@@ -77,7 +77,7 @@ namespace WPF_Crosshair {
 		/// Updates the redered text with the bind, or approrpiate hint strings.
 		/// </summary>
 		/// <param name="tempOrNot">Whether to display the temp bind list or the actual bind</param>
-		protected void updateText(bool tempOrNot = false) {
+		public void updateText(bool tempOrNot = false) {
 			List<Keys> temp = (tempOrNot ? tempKeys : keyBind);
 
 			controlString = "";
