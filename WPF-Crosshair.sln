@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF-Crossair", "WPF-Crossair\WPF-Crossair.csproj", "{594DC331-2099-465A-9052-6ED2C1F404FA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF-Crosshair", "WPF-Crossair\WPF-Crosshair.csproj", "{594DC331-2099-465A-9052-6ED2C1F404FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
