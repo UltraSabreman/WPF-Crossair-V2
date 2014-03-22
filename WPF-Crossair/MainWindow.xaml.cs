@@ -36,6 +36,7 @@ namespace WPF_Crosshair {
 		public MainWindow() {
 			InitializeComponent();
 
+			//Sets the windows properties
 			this.WindowStyle = System.Windows.WindowStyle.None;
 			this.AllowsTransparency = true;
 			this.Background = Brushes.Transparent;
@@ -45,6 +46,7 @@ namespace WPF_Crosshair {
 			this.ShowActivated = false;
 			this.Opacity = 0;
 
+			//try to read in the options file
 			try {
 				DataReader.Deserialize(configs);
 			} catch (FileNotFoundException) {}
@@ -56,6 +58,7 @@ namespace WPF_Crosshair {
 
 			LoadImage();
 
+			//register events and start the main update clock.
 			this.Closed += OnClose;
 
 			updateTimer = new Timer(OnTick, null, 0, 1000);
@@ -167,7 +170,8 @@ namespace WPF_Crosshair {
 		}
 
 		private void OptionsContext_Click(object sender, RoutedEventArgs e) {
-
+			var test = new Options();
+			test.Show();
 		}
 
 		private void EnabledContext_Click(object sender, RoutedEventArgs e) {

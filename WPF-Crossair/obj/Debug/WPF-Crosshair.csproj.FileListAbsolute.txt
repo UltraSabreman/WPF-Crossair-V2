@@ -20,3 +20,8 @@ C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\bin\Debug\Resources\off
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\bin\Debug\Resources\on.ico
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\bin\Debug\Resources\paused.ico
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\bin\Debug\Resources\test.ico
+C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Debug\Options.g.cs
+C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Debug\WPF-Crossair_MarkupCompile.lref
+C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Debug\Themes\Generic.baml
+C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Debug\Options.baml

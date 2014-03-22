@@ -1,0 +1,11 @@
+﻿<Window x:Class="WPF_Crosshair.Options"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:Bind="clr-namespace:WPF_Crosshair"
+        Title="Options" Height="300" Width="300">
+
+	<Grid>
+		<Bind:BindButton x:Name ="ToggleButton" Margin="57,40,94,149" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+
+	</Grid>
+</Window>
