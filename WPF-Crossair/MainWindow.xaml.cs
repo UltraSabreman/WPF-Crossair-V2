@@ -68,6 +68,9 @@ namespace WPF_Crosshair {
 			hotKeys.KeyPressed += hotkeyHandler;			
 
 			ChangeIcon();
+
+			var test = new Options();
+			test.Show();
 		}
 
 		public void OnClose(object o, EventArgs e) {
