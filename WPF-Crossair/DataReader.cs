@@ -15,10 +15,12 @@ namespace WPF_Crosshair {
 				try {
 					using (StreamReader fs = File.OpenText(path)) {
 						JsonConvert.PopulateObject(fs.ReadToEnd(), toFill); //#yolo
+						fs.Close();
 					}
 				} catch (Newtonsoft.Json.JsonSerializationException) {
 					using (StreamWriter fs = new StreamWriter(path)) {
 						fs.Write("{}");
+						fs.Close();
 					}
 				}
 			} else
@@ -33,6 +35,7 @@ namespace WPF_Crosshair {
 
 			using (StreamWriter fs = new StreamWriter(path)) {
 				fs.Write(JsonConvert.SerializeObject(toFill, Formatting.Indented));
+				fs.Close();
 			}
 		}
 

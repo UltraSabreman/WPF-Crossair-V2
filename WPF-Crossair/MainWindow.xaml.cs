@@ -56,7 +56,7 @@ namespace WPF_Crosshair {
 				configs.ResetHotKeys();
 			}
 
-			LoadImage(configs.CrosshairPath);
+			if (!LoadImage()) return;
 
 			//register events and start the main update clock.
 			this.Closed += OnClose;
@@ -130,31 +130,79 @@ namespace WPF_Crosshair {
 			TrayIcon.UpdateLayout();
 		}
 
-		public void LoadImage(String src) {
+		public bool LoadImage() {
+			String path = System.IO.Path.Combine(Environment.CurrentDirectory, configs.CrosshairPath);
+			bool tryAgain = true;
+
+			while (tryAgain) {
+				if (!File.Exists(path)) {
+					//TODO give opption to find another
+					if (MessageBox.Show("Crosshair file not found! \nClick OK to retry loading or click Cancel to quit", "Error Loading File", System.Windows.MessageBoxButton.OKCancel, MessageBoxImage.Error) == System.Windows.MessageBoxResult.Cancel) {
+						Application.Current.Shutdown();
+						return false;
+					} else
+						continue;
+				} else
+					tryAgain = false;
+
+				bool failed = false;
+				BitmapImage image = new BitmapImage();
+				image.DownloadFailed += (object o, ExceptionEventArgs e) => {
+					if (MessageBox.Show("Crosshair failed to load (it may be corrupted)! \nClick OK to retry loading or click Cancel to quit", "Error Loading File", System.Windows.MessageBoxButton.OKCancel, MessageBoxImage.Error) == System.Windows.MessageBoxResult.Cancel) {
+						Application.Current.Shutdown();
+						failed = true;
+					} else
+						LoadImage();
+				};
+
+				if (failed) return false;
+				try {
+					image.BeginInit();
+					image.UriSource = new Uri(path);
+					image.EndInit();
+				} catch (Exception) { return false; }
+
+
+				this.Width = image.PixelWidth;
+				this.Height = image.PixelHeight;
+
+				Test.Source = image;
+				Test.Width = image.PixelWidth;
+				Test.Height = image.PixelHeight;
+			}
+			return true;
+		}
+
+		public void LoadFromSrouce(String src) {
 			String path = System.IO.Path.Combine(Environment.CurrentDirectory, src);
 			bool tryAgain = true;
 
 			while (tryAgain) {
 				if (!File.Exists(path)) {
 					//TODO give opption to find another
-					if (MessageBox.Show("Crosshair file not found! \nClick OK to retry loading or click Cancel to quit", "Error Loading File", System.Windows.MessageBoxButton.OKCancel, MessageBoxImage.Error) == System.Windows.MessageBoxResult.Cancel)
-						Application.Current.Shutdown();
+					if (MessageBox.Show("Crosshair file not found! \nClick OK to retry loading", "Error Loading File", System.Windows.MessageBoxButton.OKCancel, MessageBoxImage.Error) == System.Windows.MessageBoxResult.Cancel)
+						return;
 					else
 						continue;
 				} else
 					tryAgain = false;
 
+				bool failed = false;
 				BitmapImage image = new BitmapImage();
 				image.DownloadFailed += (object o, ExceptionEventArgs e) => {
-					if (MessageBox.Show("Crosshair failed to load (it may be corrupted)! \nClick OK to retry loading or click Cancel to quit", "Error Loading File", System.Windows.MessageBoxButton.OKCancel, MessageBoxImage.Error) == System.Windows.MessageBoxResult.Cancel)
-						Application.Current.Shutdown();
-					else
-						LoadImage(src);
+					if (MessageBox.Show("Crosshair failed to load (it may be corrupted)! \nClick OK to retry loading", "Error Loading File", System.Windows.MessageBoxButton.OKCancel, MessageBoxImage.Error) == System.Windows.MessageBoxResult.Cancel) {
+						failed = true;
+						return;
+					} else
+						LoadFromSrouce(src);
 				};
 
-				image.BeginInit();
-				image.UriSource = new Uri(path);
-				image.EndInit();
+				if (failed) return;
+				try {
+					image.BeginInit();
+					image.UriSource = new Uri(path);
+					image.EndInit();
+				} catch (Exception) { return; }
 
 
 				this.Width = image.PixelWidth;
@@ -171,7 +219,7 @@ namespace WPF_Crosshair {
 		}
 
 		private void OptionsContext_Click(object sender, RoutedEventArgs e) {
-			var test = new Options(configs, LoadImage);
+			var test = new Options(configs, LoadFromSrouce);
 			test.OnAccept += OptionsAccept;
 			test.Show();
 		}
@@ -181,6 +229,7 @@ namespace WPF_Crosshair {
 			configs = src;
 			hotKeys.RegisterHotKey(configs.ShowHideCrosshair);
 			DataReader.Serialize(configs);
+			LoadImage();
 		}
 
 		private void EnabledContext_Click(object sender, RoutedEventArgs e) {

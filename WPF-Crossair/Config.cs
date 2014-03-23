@@ -8,7 +8,7 @@ namespace WPF_Crosshair {
 	public class Config {
 		public bool ExitWithProgram = false;
 		public String CrosshairPath = "ret.png";
-		public String TargetWindowTitle = "Calculator";
+		public String TargetWindowTitle = "Planetside.*";
 		public HotKey ShowHideCrosshair = null;
 		public bool Initilized = false;
 
