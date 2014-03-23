@@ -15,5 +15,14 @@ namespace WPF_Crosshair {
 		public void ResetHotKeys() {
 			ShowHideCrosshair = new HotKey(Keys.F4);
 		}
+
+		public void copy(Config src) {
+			ExitWithProgram = src.ExitWithProgram;
+			CrosshairPath = src.CrosshairPath;
+			TargetWindowTitle = src.TargetWindowTitle;
+			ShowHideCrosshair = src.ShowHideCrosshair;
+			Initilized = src.Initilized;
+
+		}
 	}
 }

@@ -34,18 +34,28 @@ public class HotKey {
 
     }
 
+	public override bool Equals(Object o) {
+		if (System.Object.ReferenceEquals(this, o))
+			return true;
+
+		HotKey k2 = o as HotKey;
+		if (((object)this == null) || ((object)k2 == null) || this.KeyList == null || k2.KeyList == null || this.KeyList.Count != k2.KeyList.Count) {
+			return false;
+		}
+
+
+		for (int i = 0; i < this.KeyList.Count; i++)
+			if (this.KeyList [i] != k2.KeyList [i])
+				return false;
+
+		return true;
+	}
+
     public static bool operator ==(HotKey k1, HotKey k2) {
-        if (k1.KeyList.Count != k2.KeyList.Count)
-            return false;
-
-        for (int i = 0; i < k1.KeyList.Count; i++)
-            if (k1.KeyList [i] != k2.KeyList [i])
-                return false;
-
-        return true;
+		return k1.Equals(k2);
     }
 
-    public static bool operator !=(HotKey k1, HotKey k2) {
+	public static bool operator !=(HotKey k1, HotKey k2) {
         return !(k1 == k2);
     }
 
@@ -150,6 +160,10 @@ public sealed class AsyncGlobalShortcuts : IDisposable {
         } else
             throw new InvalidOperationException("Couldn’t unregister the hot key.");
     }
+
+	public void UnregisterAll() {
+		keys.Clear();
+	}
 
     #region IDisposable Members
 

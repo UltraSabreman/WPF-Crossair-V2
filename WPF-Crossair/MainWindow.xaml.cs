@@ -56,7 +56,7 @@ namespace WPF_Crosshair {
 				configs.ResetHotKeys();
 			}
 
-			LoadImage();
+			LoadImage(configs.CrosshairPath);
 
 			//register events and start the main update clock.
 			this.Closed += OnClose;
@@ -68,9 +68,6 @@ namespace WPF_Crosshair {
 			hotKeys.KeyPressed += hotkeyHandler;			
 
 			ChangeIcon();
-
-			var test = new Options(configs);
-			test.Show();
 		}
 
 		public void OnClose(object o, EventArgs e) {
@@ -133,12 +130,13 @@ namespace WPF_Crosshair {
 			TrayIcon.UpdateLayout();
 		}
 
-		private void LoadImage() {
-			String path = System.IO.Path.Combine(Environment.CurrentDirectory, configs.CrosshairPath);
+		public void LoadImage(String src) {
+			String path = System.IO.Path.Combine(Environment.CurrentDirectory, src);
 			bool tryAgain = true;
 
 			while (tryAgain) {
 				if (!File.Exists(path)) {
+					//TODO give opption to find another
 					if (MessageBox.Show("Crosshair file not found! \nClick OK to retry loading or click Cancel to quit", "Error Loading File", System.Windows.MessageBoxButton.OKCancel, MessageBoxImage.Error) == System.Windows.MessageBoxResult.Cancel)
 						Application.Current.Shutdown();
 					else
@@ -151,7 +149,7 @@ namespace WPF_Crosshair {
 					if (MessageBox.Show("Crosshair failed to load (it may be corrupted)! \nClick OK to retry loading or click Cancel to quit", "Error Loading File", System.Windows.MessageBoxButton.OKCancel, MessageBoxImage.Error) == System.Windows.MessageBoxResult.Cancel)
 						Application.Current.Shutdown();
 					else
-						LoadImage();
+						LoadImage(src);
 				};
 
 				image.BeginInit();
@@ -173,8 +171,16 @@ namespace WPF_Crosshair {
 		}
 
 		private void OptionsContext_Click(object sender, RoutedEventArgs e) {
-			var test = new Options(configs);
+			var test = new Options(configs, LoadImage);
+			test.OnAccept += OptionsAccept;
 			test.Show();
+		}
+
+		private void OptionsAccept(Config src) {
+			hotKeys.UnregisterHotKey(configs.ShowHideCrosshair);
+			configs = src;
+			hotKeys.RegisterHotKey(configs.ShowHideCrosshair);
+			DataReader.Serialize(configs);
 		}
 
 		private void EnabledContext_Click(object sender, RoutedEventArgs e) {
