@@ -15,7 +15,9 @@ Features
 Installation
 -------
  1) Extract the release to a folder of your choosing
- 2) Run the exe
+ 
+ 2) Run the exe 
+ 
  3) Configure it to work with a program of your choosing (right click on tray icon and click Options).
  
 Disclaimer
