@@ -9,7 +9,6 @@
 		</ContextMenu>
 	</Window.Resources>
 	<Grid>
-		<Image x:Name="Test" HorizontalAlignment="Left" Height="319" VerticalAlignment="Top" Width="517"/>
 		<tb:TaskbarIcon Name="TrayIcon"
 		  ToolTipText="Crosshair Loader V2">
 			<tb:TaskbarIcon.ContextMenu>

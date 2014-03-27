@@ -21,22 +21,22 @@ namespace WPF_Crosshair {
 	/// Interaction logic for Options.xaml
 	/// </summary>
 	public partial class Options : Window {
-		public Config configs = null;
-		public Config tempConfig = new Config();
-		public delegate void Reload(String s);
-		private Reload rel;
+		private Config configs = null;
+		private Config tempConfig = new Config();
+		private GameWindow tempWindow = null;
 
-		public delegate void Done(Config c);
+		public delegate void Done(Config c, GameWindow wind);
 		public event Done OnAccept;
 
-		public Options(Config configin, Reload rel) {
+		public Options(Config configin) {
+			tempWindow = new GameWindow(configin.TargetWindowTitle, configin.CrosshairPath);
+			tempWindow.isEnabled = false;
+
 			InitializeComponent();
 
 			ToggleBind.OnNewBind += BindChanged;
 			configs = configin;
 			tempConfig = configs;
-
-			this.rel = rel;
 
 			FilePath.Text = configs.CrosshairPath;
 			FilePath.TextWrapping = TextWrapping.NoWrap;
@@ -46,7 +46,6 @@ namespace WPF_Crosshair {
 			TargetWindow.Text = configs.TargetWindowTitle;
 
 			this.ResizeMode = System.Windows.ResizeMode.NoResize;
-
 		}
 
 		private void BindChanged(List<Keys> bind) {
@@ -54,14 +53,20 @@ namespace WPF_Crosshair {
 		}
 
 		private void ReloadButton_Click(object sender, RoutedEventArgs e) {
-			rel(tempConfig.CrosshairPath);
+			try {
+				tempWindow.LoadImage(tempConfig.CrosshairPath);
+			} catch (FileLoadException) {
+				System.Windows.MessageBox.Show("Crosshair failed to load, is it corrupted?", "Failed to load", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);			
+			} catch (FileNotFoundException) {
+				System.Windows.MessageBox.Show("Crosshair file not found.", "File not found", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);			
+			}
 		}
 
 		private void OkButton_Click(object sender, RoutedEventArgs e) {
 			tempConfig.CrosshairPath = FilePath.Text;
 			
 			if (OnAccept != null)
-				OnAccept(tempConfig);
+				OnAccept(tempConfig, tempWindow);
 
 			this.Close();
 		}
@@ -75,6 +80,7 @@ namespace WPF_Crosshair {
 			diag.InitialDirectory = Directory.GetCurrentDirectory();
 			diag.CheckFileExists = true;
 			diag.DefaultExt = "png";
+			diag.Filter = "PNG Image (*.png)|*.png";
 			diag.Multiselect = false;
 			
 
@@ -88,7 +94,7 @@ namespace WPF_Crosshair {
 		}
 
 		private void ExitWith_Checked(object sender, RoutedEventArgs e) {
-			tempConfig.ExitWithProgram = ExitWith.HasContent ? (bool)ExitWith.IsChecked : false;
+			tempConfig.ExitWithProgram = (bool)ExitWith.IsChecked;
 		}
 
 		private void FilePath_TextChanged(object sender, TextChangedEventArgs e) {
@@ -97,16 +103,11 @@ namespace WPF_Crosshair {
 
 		private void TargetWindow_TextChanged(object sender, TextChangedEventArgs e) {
 			tempConfig.TargetWindowTitle = TargetWindow.Text;
+			tempWindow.setWindowTitleRegex(TargetWindow.Text);
 		}
 
 		private void TestTarget_Click(object sender, RoutedEventArgs e) {
-			Regex t = new Regex(tempConfig.TargetWindowTitle);
-			Process win = Process.GetProcesses().FirstOrDefault(x => t.Match(x.MainWindowTitle).Success);
-
-			if (win != null)
-				System.Windows.MessageBox.Show("Found a window. \n Window title: " + win.MainWindowTitle, "Found Matching Window", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
-			else
-				System.Windows.MessageBox.Show("Can't match a window, are you sure you spelled it right?", "Error: No Matching Window", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
+			tempWindow.test();
 		}
 
 	}

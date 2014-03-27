@@ -10,35 +10,57 @@ namespace WPF_Crosshair {
 	static class DataReader {
 		private static String filePath = "data.json";
 
+		/// <summary>
+		/// De-serializes the configs
+		/// </summary>
+		/// <param name="path">Filepath to the config location</param>
+		/// <param name="toFill">The config object that will be populated</param>
+		/// <exception cref="FileNotFoundException"/>
+		/// <exception cref="UnauthorizedAccessException"/>
+		/// 
 		public static void Deserialize(String path, Config toFill) {
 			if (File.Exists(path)) {
 				try {
-					using (StreamReader fs = File.OpenText(path)) {
-						JsonConvert.PopulateObject(fs.ReadToEnd(), toFill); //#yolo
-						fs.Close();
+					using (TextReader reader = File.OpenText(path)) {
+						JsonConvert.PopulateObject(reader.ReadToEnd(), toFill); //#yolo
 					}
-				} catch (Newtonsoft.Json.JsonSerializationException) {
-					using (StreamWriter fs = new StreamWriter(path)) {
-						fs.Write("{}");
-						fs.Close();
-					}
+					toFill.Initilized = true;
+				} catch (Newtonsoft.Json.JsonSerializationException e) {
+					throw new FileNotFoundException();
 				}
 			} else
 				throw new FileNotFoundException();
 		}
+		/// <summary>
+		/// De-serializes the configs, ussing the default path "data.json"
+		/// </summary>
+		/// <param name="toFill">The config object that will be populated</param>
+		/// <exception cref="FileNotFoundException"/>
+		/// <exception cref="UnauthorizedAccessException"/>
 		public static void Deserialize(Config toFill) {
 			Deserialize(filePath, toFill);
 		}
 
+		/// <summary>
+		/// Serializes the configs
+		/// </summary>
+		/// <param name="path">Filepath to the config location</param>
+		/// <param name="toFill">The config object that will be written</param>
+		/// <exception cref="UnauthorizedAccessException"/>
 		public static void Serialize(String path, Config toFill) {
 			if (!File.Exists(path)) File.CreateText(path);
 
-			using (StreamWriter fs = new StreamWriter(path)) {
-				fs.Write(JsonConvert.SerializeObject(toFill, Formatting.Indented));
-				fs.Close();
+			using (StreamWriter writer = new StreamWriter(path)) {
+				writer.Write(JsonConvert.SerializeObject(toFill, Formatting.Indented));
 			}
 		}
 
+
+		/// <summary>
+		/// Serializes the configs, using the default location "data.json"
+		/// </summary>
+		/// <param name="toFill">The config object that will be written</param>
+		/// <exception cref="UnauthorizedAccessException"/>
 		public static void Serialize(Config toFill) {
 			Serialize(filePath, toFill);
 		}

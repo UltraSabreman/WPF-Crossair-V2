@@ -30,20 +30,19 @@ namespace WPF_Crosshair {
 		private bool enabled = true;
 		private bool focused = false;
 		private Timer updateTimer = null;
-		private Regex windowTitle = null;
 		private AsyncGlobalShortcuts hotKeys = new AsyncGlobalShortcuts();
+		private GameWindow testWindow = null;
 
 		public MainWindow() {
 			InitializeComponent();
 
 			//Sets the windows properties
 			this.WindowStyle = System.Windows.WindowStyle.None;
-			this.AllowsTransparency = true;
-			this.Background = Brushes.Transparent;
 			this.Focusable = false;
 			this.ShowInTaskbar = false;
 			this.Topmost = true;
 			this.ShowActivated = false;
+			this.Hide();
 			this.Opacity = 0;
 
 			//try to read in the options file
@@ -56,16 +55,16 @@ namespace WPF_Crosshair {
 				configs.ResetHotKeys();
 			}
 
-			if (!LoadImage()) return;
-
 			//register events and start the main update clock.
 			this.Closed += OnClose;
 
 			updateTimer = new Timer(OnTick, null, 0, 1000);
-			windowTitle = new Regex(configs.TargetWindowTitle, RegexOptions.Compiled);
 
 			hotKeys.RegisterHotKey(configs.ShowHideCrosshair);
-			hotKeys.KeyPressed += hotkeyHandler;			
+			hotKeys.KeyPressed += hotkeyHandler;
+
+			testWindow = new GameWindow(configs.TargetWindowTitle, configs.CrosshairPath);
+			testWindow.isEnabled = true;
 
 			ChangeIcon();
 		}
@@ -75,143 +74,39 @@ namespace WPF_Crosshair {
 		}
 
 		private void OnTick(object call) {
-			IntPtr GameWindow = new IntPtr();
-
-			try {
-				GameWindow = Process.GetProcesses().FirstOrDefault(x => windowTitle.Match(x.MainWindowTitle).Success).MainWindowHandle;
-				if (GameWindow == Haax.GetForegroundWindow())
-					focused = true;
-				else 
-					focused = false;
-			} catch (System.NullReferenceException) {
-				focused = false;
-				if (configs.ExitWithProgram)
-					Application.Current.Shutdown();
-
-				this.Dispatcher.Invoke(new Action(() => { ChangeIcon(); }));
-
-				return;
-			}
-
-			Haax.RECT tempSize = new Haax.RECT();
-			Haax.GetWindowRect(GameWindow, ref tempSize);
-
-			this.Dispatcher.Invoke(new Action(() => {
-				double newX = ((double)tempSize.Left + ((double)tempSize.Right - (double)tempSize.Left) / 2 - this.Width / 2);
-				double newY = ((double)tempSize.Top + ((double)tempSize.Bottom - (double)tempSize.Top) / 2 - this.Height / 2);
-
-				this.Left = newX;
-				this.Top = newY;
-
+			if (testWindow == null) return;
+			testWindow.OnTick();
+			
+			this.Dispatcher.Invoke(new Action(() => { 
 				ChangeIcon();
+
+				if (!testWindow.hasWindow && configs.ExitWithProgram)
+					Application.Current.Shutdown();
 			}));
+
 		}
 
 		private void hotkeyHandler(object source, KeyPressedEventArgs e) {
-			if (e.Key.First() == configs.ShowHideCrosshair.First()) {
+			if (e.Key == configs.ShowHideCrosshair) {
 				enabled = !enabled;
+				testWindow.isEnabled = !testWindow.isEnabled;
 				ChangeIcon();
 			}
 		}
 
 		private void ChangeIcon() {
-			if (enabled) {
-				if (focused) {
-					this.Opacity = 100;
-					TrayIcon.Icon = Properties.Resources.on;
+			this.Dispatcher.Invoke(new Action(() => {
+				if (enabled) {
+					if (testWindow.isFocused) {
+						TrayIcon.Icon = Properties.Resources.on;
+					} else {
+						TrayIcon.Icon = Properties.Resources.paused;
+					}
 				} else {
-					this.Opacity = 0;
-					TrayIcon.Icon = Properties.Resources.paused;
+					TrayIcon.Icon = Properties.Resources.off;
 				}
-			} else {
-				this.Opacity = 0;
-				TrayIcon.Icon = Properties.Resources.off;
-			}
-			TrayIcon.UpdateLayout();
-		}
-
-		public bool LoadImage() {
-			String path = System.IO.Path.Combine(Environment.CurrentDirectory, configs.CrosshairPath);
-			bool tryAgain = true;
-
-			while (tryAgain) {
-				if (!File.Exists(path)) {
-					//TODO give opption to find another
-					if (MessageBox.Show("Crosshair file not found! \nClick OK to retry loading or click Cancel to quit", "Error Loading File", System.Windows.MessageBoxButton.OKCancel, MessageBoxImage.Error) == System.Windows.MessageBoxResult.Cancel) {
-						Application.Current.Shutdown();
-						return false;
-					} else
-						continue;
-				} else
-					tryAgain = false;
-
-				bool failed = false;
-				BitmapImage image = new BitmapImage();
-				image.DownloadFailed += (object o, ExceptionEventArgs e) => {
-					if (MessageBox.Show("Crosshair failed to load (it may be corrupted)! \nClick OK to retry loading or click Cancel to quit", "Error Loading File", System.Windows.MessageBoxButton.OKCancel, MessageBoxImage.Error) == System.Windows.MessageBoxResult.Cancel) {
-						Application.Current.Shutdown();
-						failed = true;
-					} else
-						LoadImage();
-				};
-
-				if (failed) return false;
-				try {
-					image.BeginInit();
-					image.UriSource = new Uri(path);
-					image.EndInit();
-				} catch (Exception) { return false; }
-
-
-				this.Width = image.PixelWidth;
-				this.Height = image.PixelHeight;
-
-				Test.Source = image;
-				Test.Width = image.PixelWidth;
-				Test.Height = image.PixelHeight;
-			}
-			return true;
-		}
-
-		public void LoadFromSrouce(String src) {
-			String path = System.IO.Path.Combine(Environment.CurrentDirectory, src);
-			bool tryAgain = true;
-
-			while (tryAgain) {
-				if (!File.Exists(path)) {
-					//TODO give opption to find another
-					if (MessageBox.Show("Crosshair file not found! \nClick OK to retry loading", "Error Loading File", System.Windows.MessageBoxButton.OKCancel, MessageBoxImage.Error) == System.Windows.MessageBoxResult.Cancel)
-						return;
-					else
-						continue;
-				} else
-					tryAgain = false;
-
-				bool failed = false;
-				BitmapImage image = new BitmapImage();
-				image.DownloadFailed += (object o, ExceptionEventArgs e) => {
-					if (MessageBox.Show("Crosshair failed to load (it may be corrupted)! \nClick OK to retry loading", "Error Loading File", System.Windows.MessageBoxButton.OKCancel, MessageBoxImage.Error) == System.Windows.MessageBoxResult.Cancel) {
-						failed = true;
-						return;
-					} else
-						LoadFromSrouce(src);
-				};
-
-				if (failed) return;
-				try {
-					image.BeginInit();
-					image.UriSource = new Uri(path);
-					image.EndInit();
-				} catch (Exception) { return; }
-
-
-				this.Width = image.PixelWidth;
-				this.Height = image.PixelHeight;
-
-				Test.Source = image;
-				Test.Width = image.PixelWidth;
-				Test.Height = image.PixelHeight;
-			}
+				TrayIcon.UpdateLayout();
+			}));
 		}
 
 		private void ExitContext_Click(object sender, RoutedEventArgs e) {
@@ -219,17 +114,22 @@ namespace WPF_Crosshair {
 		}
 
 		private void OptionsContext_Click(object sender, RoutedEventArgs e) {
-			var test = new Options(configs, LoadFromSrouce);
+			var test = new Options(configs);
 			test.OnAccept += OptionsAccept;
 			test.Show();
 		}
 
-		private void OptionsAccept(Config src) {
+		private void OptionsAccept(Config src, GameWindow newWind) {
 			hotKeys.UnregisterHotKey(configs.ShowHideCrosshair);
 			configs = src;
 			hotKeys.RegisterHotKey(configs.ShowHideCrosshair);
+
+			bool en = testWindow.isEnabled;
+			testWindow = newWind;
+			testWindow.LoadImage(configs.CrosshairPath);
+			testWindow.isEnabled = en;
+
 			DataReader.Serialize(configs);
-			LoadImage();
 		}
 
 		private void EnabledContext_Click(object sender, RoutedEventArgs e) {

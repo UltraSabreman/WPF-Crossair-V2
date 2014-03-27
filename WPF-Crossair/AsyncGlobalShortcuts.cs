@@ -19,9 +19,12 @@ public class HotKey {
 	public List<Keys> KeyList = null;
     public bool isDown = false;
 
+	public HotKey() {
+		KeyList = new List<Keys>();
+	}
+
 	public HotKey(List<Keys> mod) {
         KeyList = mod;
-        isDown = false;
     }
 
     public HotKey(params object [] hotkeys) {

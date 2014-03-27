@@ -1,0 +1,12 @@
+{
+  "ExitWithProgram": true,
+  "CrosshairPath": "ret.png",
+  "TargetWindowTitle": "Calcul.*",
+  "ShowHideCrosshair": {
+    "KeyList": [
+      117
+    ],
+    "isDown": false
+  },
+  "Initilized": true
+}
