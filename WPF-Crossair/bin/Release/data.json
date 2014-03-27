@@ -1,1 +1,12 @@
-{}
+{
+  "ExitWithProgram": true,
+  "CrosshairPath": "C:\\Users\\Andrey\\Documents\\Code\\WPF-Crossair\\WPF-Crossair\\bin\\Debug\\ret.png",
+  "TargetWindowTitle": "Calculator",
+  "ShowHideCrosshair": {
+    "KeyList": [
+      117
+    ],
+    "isDown": false
+  },
+  "Initilized": true
+}

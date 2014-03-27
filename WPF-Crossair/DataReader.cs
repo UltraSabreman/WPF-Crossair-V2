@@ -22,7 +22,10 @@ namespace WPF_Crosshair {
 			if (File.Exists(path)) {
 				try {
 					using (TextReader reader = File.OpenText(path)) {
-						JsonConvert.PopulateObject(reader.ReadToEnd(), toFill); //#yolo
+						String contents = reader.ReadToEnd();
+						if (contents == "{}") return;
+
+						JsonConvert.PopulateObject(contents, toFill); //#yolo
 					}
 					toFill.Initilized = true;
 				} catch (Newtonsoft.Json.JsonSerializationException e) {
@@ -48,8 +51,6 @@ namespace WPF_Crosshair {
 		/// <param name="toFill">The config object that will be written</param>
 		/// <exception cref="UnauthorizedAccessException"/>
 		public static void Serialize(String path, Config toFill) {
-			if (!File.Exists(path)) File.CreateText(path);
-
 			using (StreamWriter writer = new StreamWriter(path)) {
 				writer.Write(JsonConvert.SerializeObject(toFill, Formatting.Indented));
 			}

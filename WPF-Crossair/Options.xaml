@@ -86,7 +86,7 @@
 				</WindowsFormsHost>
 			</Grid>
 		</GroupBox>
-		<CheckBox x:Name="ExitWith" Content="Exit With Program" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,125,0,0" Checked="ExitWith_Checked"/>
+		<CheckBox x:Name="ExitWith" Content="Exit With Program" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,125,0,0" Checked="ExitWith_Checked" Unchecked="ExitWith_Checked"/>
 		<TextBox Tag="Set the target Window (you can use regex)."  x:Name="TargetWindow" HorizontalAlignment="Left" Height="23" Margin="10,69,0,0" TextWrapping="Wrap" 
 				 Text="" VerticalAlignment="Top" Width="289" Style="{DynamicResource TextBoxStyle1}" TextChanged="TargetWindow_TextChanged" />
 		<Button x:Name="CancelButton" Content="Cancel" HorizontalAlignment="Left" Width="75" Margin="260,0,0,10" Height="20" VerticalAlignment="Bottom" Click="CancelButton_Click"/>

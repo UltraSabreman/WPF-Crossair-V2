@@ -21,7 +21,8 @@ namespace WPF_Crosshair {
 		public bool hasWindow { get; private set; }
 
 		public GameWindow(String regex, String imgPath) {
-			windowRegex = new Regex(regex, RegexOptions.Compiled);
+			if (regex != null)
+				windowRegex = new Regex(regex, RegexOptions.Compiled);
 
 			overlay = new Window();
 				overlay.WindowStyle = System.Windows.WindowStyle.None;
@@ -35,7 +36,8 @@ namespace WPF_Crosshair {
 				overlay.Content = new Image();
 			overlay.Show();
 
-			LoadImage(imgPath);
+			if (imgPath != null)
+				LoadImage(imgPath);
 
 			hasWindow = true; //set to true at first so it has a chance to load
 		}
@@ -44,23 +46,22 @@ namespace WPF_Crosshair {
 		/// Repositiones the pverlay and toggles its visibility
 		/// </summary>
 		public void OnTick() {
-			if (!isEnabled) { overlay.Dispatcher.Invoke(new Action(() => { overlay.Opacity = 0; })); return; }
+			if (!isEnabled || windowRegex == null || crosshair == null) { overlay.Dispatcher.Invoke(new Action(() => { overlay.Opacity = 0; })); return; }
 			IntPtr GameWindow = IntPtr.Zero;
 
 			try {
 				GameWindow = Process.GetProcesses().FirstOrDefault(x => windowRegex.Match(x.MainWindowTitle).Success).MainWindowHandle;
-				if (GameWindow == Haax.GetForegroundWindow())
+				if (GameWindow == Haax.GetForegroundWindow()) {
 					isFocused = true;
-				else {
-					if (GameWindow == IntPtr.Zero)
-						hasWindow = false;
-					else
-						hasWindow = true;
+					hasWindow = true;
+				} else {
+					hasWindow = true;
 					isFocused = false;
 				}
 			} catch (System.NullReferenceException) {
 				isFocused = false;
 				hasWindow = false;
+				overlay.Dispatcher.Invoke(new Action(() => { overlay.Opacity = 0; }));
 				return;
 			}
 
@@ -111,30 +112,31 @@ namespace WPF_Crosshair {
 		/// <exception cref="FileLoadException"/>
 		/// <exception cref="FileNotFoundException"/>
 		public bool LoadImage(String Path) {
-			String path = System.IO.Path.Combine(Environment.CurrentDirectory, Path);
+			Path = System.IO.Path.Combine(Environment.CurrentDirectory, Path);
 
-			if (!File.Exists(path)) {
+			if (!File.Exists(Path)) {
 				throw new FileNotFoundException("Crosshair not found!");
-			} else
-				
-			crosshair = new BitmapImage();
-			crosshair.DownloadFailed += (object o, ExceptionEventArgs e) => { throw new FileLoadException("Failed to load crosshair. File might be corrupted?"); };
 
-			try {
-				crosshair.BeginInit();
-				crosshair.UriSource = new Uri(path);
-				crosshair.EndInit();
-			} catch (Exception) { throw new FileLoadException("Failed to load crosshair. File might be corrupted?"); }
+			} else {
+				crosshair = new BitmapImage();
+				crosshair.DownloadFailed += (object o, ExceptionEventArgs e) => { throw new FileLoadException("Failed to load crosshair. File might be corrupted?"); };
+
+				try {
+					crosshair.BeginInit();
+					crosshair.UriSource = new Uri(Path);
+					crosshair.EndInit();
+				} catch (Exception) { throw new FileLoadException("Failed to load crosshair. File might be corrupted?"); }
 
 
-			overlay.Width = crosshair.PixelWidth;
-			overlay.Height = crosshair.PixelHeight;
+				overlay.Width = crosshair.PixelWidth;
+				overlay.Height = crosshair.PixelHeight;
 
-			getOverlay().Source = crosshair;
-			getOverlay().Width = crosshair.PixelWidth;
-			getOverlay().Height = crosshair.PixelHeight;
+				getOverlay().Source = crosshair;
+				getOverlay().Width = crosshair.PixelWidth;
+				getOverlay().Height = crosshair.PixelHeight;
 
-			return true;
+				return true;
+			}
 		}
 
 		/// <summary>

@@ -29,7 +29,7 @@ namespace WPF_Crosshair {
 		public event Done OnAccept;
 
 		public Options(Config configin) {
-			tempWindow = new GameWindow(configin.TargetWindowTitle, configin.CrosshairPath);
+			tempWindow = new GameWindow(null, null);
 			tempWindow.isEnabled = false;
 
 			InitializeComponent();
@@ -55,6 +55,7 @@ namespace WPF_Crosshair {
 		private void ReloadButton_Click(object sender, RoutedEventArgs e) {
 			try {
 				tempWindow.LoadImage(tempConfig.CrosshairPath);
+				System.Windows.MessageBox.Show("Crosshair loaded successfully!", "Loaded", System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);			
 			} catch (FileLoadException) {
 				System.Windows.MessageBox.Show("Crosshair failed to load, is it corrupted?", "Failed to load", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);			
 			} catch (FileNotFoundException) {
@@ -64,7 +65,17 @@ namespace WPF_Crosshair {
 
 		private void OkButton_Click(object sender, RoutedEventArgs e) {
 			tempConfig.CrosshairPath = FilePath.Text;
-			
+
+			try {
+				tempWindow.LoadImage(tempConfig.CrosshairPath);			
+			} catch (FileLoadException) {
+				System.Windows.MessageBox.Show("Crosshair failed to load, is it corrupted?", "Failed to load", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			} catch (FileNotFoundException) {
+				System.Windows.MessageBox.Show("Crosshair file not found.", "File not found", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+
 			if (OnAccept != null)
 				OnAccept(tempConfig, tempWindow);
 
@@ -94,7 +105,8 @@ namespace WPF_Crosshair {
 		}
 
 		private void ExitWith_Checked(object sender, RoutedEventArgs e) {
-			tempConfig.ExitWithProgram = (bool)ExitWith.IsChecked;
+			tempConfig.ExitWithProgram = ExitWith.IsChecked != null ? (bool)ExitWith.IsChecked : false;
+			Console.WriteLine(tempConfig.ExitWithProgram.ToString());
 		}
 
 		private void FilePath_TextChanged(object sender, TextChangedEventArgs e) {
@@ -109,6 +121,5 @@ namespace WPF_Crosshair {
 		private void TestTarget_Click(object sender, RoutedEventArgs e) {
 			tempWindow.test();
 		}
-
 	}
 }

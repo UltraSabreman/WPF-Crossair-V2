@@ -8,8 +8,8 @@
 			<MenuItem Header="Send" />
 		</ContextMenu>
 	</Window.Resources>
-	<Grid>
-		<tb:TaskbarIcon Name="TrayIcon"
+	<Grid x:Name="Grid">
+		<!--<tb:TaskbarIcon Name="TrayIcon"
 		  ToolTipText="Crosshair Loader V2">
 			<tb:TaskbarIcon.ContextMenu>
 				
@@ -20,7 +20,7 @@
 					<MenuItem x:Name="ExitContext" IsCheckable="False" Header="Exit" Click="ExitContext_Click" />
 				</ContextMenu>
 			</tb:TaskbarIcon.ContextMenu>
-		</tb:TaskbarIcon>
+		</tb:TaskbarIcon>-->
 		
 
 	</Grid>

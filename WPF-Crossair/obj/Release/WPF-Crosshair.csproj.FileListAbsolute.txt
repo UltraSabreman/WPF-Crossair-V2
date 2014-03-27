@@ -6,15 +6,11 @@ C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\bin\Release\Resources\p
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\bin\Release\Resources\test.ico
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\bin\Release\WPF-Crossair.exe
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\bin\Release\WPF-Crossair.pdb
-C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\bin\Release\Hardcodet.Wpf.TaskbarNotification.dll
-C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\bin\Release\Hardcodet.Wpf.TaskbarNotification.pdb
-C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\bin\Release\Hardcodet.Wpf.TaskbarNotification.xml
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Release\WPF-Crosshair.csprojResolveAssemblyReference.cache
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Release\MainWindow.baml
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Release\MainWindow.g.cs
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Release\Options.g.cs
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Release\App.g.cs
-C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Release\WPF-Crossair_Content.g.cs
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Release\GeneratedInternalTypeHelper.g.cs
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Release\WPF-Crossair_MarkupCompile.cache
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Release\WPF-Crossair_MarkupCompile.lref
@@ -24,3 +20,5 @@ C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Release\WPF_Crossha
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Release\WPF-Crosshair.csproj.GenerateResource.Cache
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Release\WPF-Crossair.exe
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Release\WPF-Crossair.pdb
+C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\bin\Release\Newtonsoft.Json.pdb
+C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\bin\Release\Newtonsoft.Json.xml

@@ -55,6 +55,7 @@ public class HotKey {
 	}
 
     public static bool operator ==(HotKey k1, HotKey k2) {
+		if (((object)k1 == null)) return false;
 		return k1.Equals(k2);
     }
 
@@ -90,6 +91,7 @@ public sealed class AsyncGlobalShortcuts : IDisposable {
 		try {
 			for (int i = 0; i < keys.Count; i++) {
 				HotKey k = keys [i];
+				if (k == null || k.KeyList == null) continue;
 				bool allPressed = true;
 				foreach (Keys key in k.KeyList) {
 					if (!isKeyPressed(key)) {

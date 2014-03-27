@@ -9,10 +9,6 @@ C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\bin\Debug\WPF-Crossair.
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Debug\WPF-Crossair.pdb
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Debug\WPF-Crosshair.csprojResolveAssemblyReference.cache
-C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Debug\WPF-Crossair_Content.g.cs
-C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\bin\Debug\Hardcodet.Wpf.TaskbarNotification.dll
-C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\bin\Debug\Hardcodet.Wpf.TaskbarNotification.pdb
-C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\bin\Debug\Hardcodet.Wpf.TaskbarNotification.xml
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\bin\Debug\Resources\off.ico
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\bin\Debug\Resources\on.ico
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\bin\Debug\Resources\paused.ico
@@ -24,3 +20,5 @@ C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Debug\MainWindow.g.
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Debug\Options.g.cs
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Debug\App.g.cs
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Debug\Options.baml
+C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\bin\Debug\Newtonsoft.Json.pdb
+C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\bin\Debug\Newtonsoft.Json.xml

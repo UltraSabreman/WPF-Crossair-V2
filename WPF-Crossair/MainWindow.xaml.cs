@@ -33,6 +33,9 @@ namespace WPF_Crosshair {
 		private AsyncGlobalShortcuts hotKeys = new AsyncGlobalShortcuts();
 		private GameWindow testWindow = null;
 
+		private System.Windows.Forms.NotifyIcon TrayIcon = null;
+		private System.Windows.Forms.MenuItem enabledContext = null;
+
 		public MainWindow() {
 			InitializeComponent();
 
@@ -44,6 +47,27 @@ namespace WPF_Crosshair {
 			this.ShowActivated = false;
 			this.Hide();
 			this.Opacity = 0;
+
+			TrayIcon = new System.Windows.Forms.NotifyIcon();
+			TrayIcon.Icon = WPF_Crosshair.Properties.Resources.on;
+			TrayIcon.Visible = true;
+			TrayIcon.ContextMenu = new System.Windows.Forms.ContextMenu();
+
+			enabledContext = new System.Windows.Forms.MenuItem("Enable", (object s, EventArgs a) => { ToggleThing(); });
+
+			System.Windows.Forms.MenuItem optionsContext = new System.Windows.Forms.MenuItem("Options", OptionsContext_Click);
+
+			System.Windows.Forms.MenuItem exitContext = new System.Windows.Forms.MenuItem("Exit", (object s, EventArgs a) => {
+				System.Windows.Application.Current.Shutdown();
+			});
+
+			TrayIcon.ContextMenu.MenuItems.Add(enabledContext);
+			TrayIcon.ContextMenu.MenuItems.Add(optionsContext);
+			TrayIcon.ContextMenu.MenuItems.Add(new System.Windows.Forms.MenuItem("-"));
+			TrayIcon.ContextMenu.MenuItems.Add(exitContext);
+
+			TrayIcon.DoubleClick += delegate(object sender, EventArgs args) { ToggleThing(); };
+
 
 			//try to read in the options file
 			try {
@@ -63,13 +87,27 @@ namespace WPF_Crosshair {
 			hotKeys.RegisterHotKey(configs.ShowHideCrosshair);
 			hotKeys.KeyPressed += hotkeyHandler;
 
-			testWindow = new GameWindow(configs.TargetWindowTitle, configs.CrosshairPath);
-			testWindow.isEnabled = true;
+			try {
+				//if (configs.CrosshairPath != null && File.Exists(configs.CrosshairPath))
+					testWindow = new GameWindow(configs.TargetWindowTitle, configs.CrosshairPath);
+					testWindow.isEnabled = true;
+					ChangeIcon();
+				//else
+				//	testWindow = new GameWindow(null, null);
 
-			ChangeIcon();
+			} catch (FileNotFoundException) {
+				MessageBoxResult res = MessageBox.Show("Can't find a crosshair.\nWould you like to set it's location?", "No Crosshair", System.Windows.MessageBoxButton.OKCancel, MessageBoxImage.Error);
+				if (res == MessageBoxResult.Cancel)
+					Application.Current.Shutdown();
+				else
+					OptionsContext_Click(null, null);
+			}
+
 		}
 
 		public void OnClose(object o, EventArgs e) {
+			TrayIcon.Visible = false;
+			TrayIcon.Dispose();
 			DataReader.Serialize(configs);
 		}
 
@@ -88,13 +126,12 @@ namespace WPF_Crosshair {
 
 		private void hotkeyHandler(object source, KeyPressedEventArgs e) {
 			if (e.Key == configs.ShowHideCrosshair) {
-				enabled = !enabled;
-				testWindow.isEnabled = !testWindow.isEnabled;
-				ChangeIcon();
+				ToggleThing();
 			}
 		}
 
 		private void ChangeIcon() {
+			if (TrayIcon == null) return;
 			this.Dispatcher.Invoke(new Action(() => {
 				if (enabled) {
 					if (testWindow.isFocused) {
@@ -105,15 +142,10 @@ namespace WPF_Crosshair {
 				} else {
 					TrayIcon.Icon = Properties.Resources.off;
 				}
-				TrayIcon.UpdateLayout();
 			}));
 		}
 
-		private void ExitContext_Click(object sender, RoutedEventArgs e) {
-			Application.Current.Shutdown();
-		}
-
-		private void OptionsContext_Click(object sender, RoutedEventArgs e) {
+		private void OptionsContext_Click(object sender, EventArgs e) {
 			var test = new Options(configs);
 			test.OnAccept += OptionsAccept;
 			test.Show();
@@ -124,19 +156,28 @@ namespace WPF_Crosshair {
 			configs = src;
 			hotKeys.RegisterHotKey(configs.ShowHideCrosshair);
 
-			bool en = testWindow.isEnabled;
+			bool en = testWindow != null ? testWindow.isEnabled : true;
 			testWindow = newWind;
-			testWindow.LoadImage(configs.CrosshairPath);
+
+			try {
+				testWindow.LoadImage(configs.CrosshairPath);			
+			} catch (FileLoadException) {
+				System.Windows.MessageBox.Show("Crosshair failed to load, is it corrupted?", "Failed to load", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);			
+			} catch (FileNotFoundException) {
+				System.Windows.MessageBox.Show("Crosshair file not found.", "File not found", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);			
+			}
+
 			testWindow.isEnabled = en;
 
+			ChangeIcon();
 			DataReader.Serialize(configs);
 		}
 
-		private void EnabledContext_Click(object sender, RoutedEventArgs e) {
+		private void ToggleThing() {
 			enabled = !enabled;
-			EnabledContext.IsChecked = enabled;
+			enabledContext.Checked = enabled;
+			testWindow.isEnabled = enabled;
 			ChangeIcon();
 		}
-
 	}
 }
