@@ -43,7 +43,7 @@ namespace WPF_Crosshair {
 			this.WindowStyle = System.Windows.WindowStyle.None;
 			this.Focusable = false;
 			this.ShowInTaskbar = false;
-			this.Topmost = true;
+			this.Topmost = false;
 			this.ShowActivated = false;
 			this.Hide();
 			this.Opacity = 0;

@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Controls;
 using System.IO;
 using System.Diagnostics;
+using System.Windows.Interop;
 
 namespace WPF_Crosshair {
 	public class GameWindow {
@@ -34,7 +35,10 @@ namespace WPF_Crosshair {
 				overlay.ShowActivated = false;
 				overlay.Opacity = 0;
 				overlay.Content = new Image();
+
+
 			overlay.Show();
+			Haax.SetWindowExTransparent(new WindowInteropHelper(overlay).Handle);
 
 			if (imgPath != null)
 				LoadImage(imgPath);

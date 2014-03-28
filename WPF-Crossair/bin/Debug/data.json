@@ -1,8 +1,7 @@
 {
   "ExitWithProgram": false,
-  "PathIsLocal": true,
   "CrosshairPath": "ret.png",
-  "TargetWindowTitle": "Calculator",
+  "TargetWindowTitle": "Planetside.*",
   "ShowHideCrosshair": {
     "KeyList": [
       115
