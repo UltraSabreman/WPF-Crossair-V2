@@ -40,5 +40,8 @@ namespace WPF_Crosshair {
 			var extendedStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
 			SetWindowLong(hwnd, GWL_EXSTYLE, extendedStyle | WS_EX_TRANSPARENT);
 		}
+
+		[DllImport("Kernel32.dll", SetLastError = true)]
+		public static extern int SetStdHandle(int device, IntPtr handle); 
 	}
 }
