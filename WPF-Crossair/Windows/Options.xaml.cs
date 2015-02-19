@@ -33,21 +33,20 @@ namespace WPF_Crosshair {
 			tempWindow.isEnabled = false;
 
 			InitializeComponent();
-
-			ToggleBind.OnNewBind += BindChanged;
 			
 			FilePath.Text = Configs.Properties["ImagePath"] as String;
-			FilePath.TextWrapping = TextWrapping.NoWrap;
-			ToggleBind.keyBind = Configs.Properties["HotKey"] as List<Keys> ?? new List<Keys>();
+			HotKey key = Configs.Properties["HotKey"] as HotKey;
+			if (key == null)
+				ToggleBind.keyBind = new List<Keys>();
+			else
+				ToggleBind.keyBind = key.KeyList;
+
 			ToggleBind.updateText();
 			ExitWith.IsChecked = (bool) Configs.Properties["ExitWithProgram"];
 			TargetWindow.Text = Configs.Properties["TargetTitle"] as String;
 
+			FilePath.TextWrapping = TextWrapping.NoWrap;
 			this.ResizeMode = System.Windows.ResizeMode.NoResize;
-		}
-
-		private void BindChanged(List<Keys> bind) {
-			Configs.Properties["HotKey"] = new HotKey(bind);
 		}
 
 		private void ReloadButton_Click(object sender, RoutedEventArgs e) {
@@ -59,6 +58,17 @@ namespace WPF_Crosshair {
 			} catch (FileNotFoundException) {
 				System.Windows.MessageBox.Show("Crosshair file not found.", "File not found", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);			
 			}
+
+			FilePath.Text = Configs.Properties["ImagePath"] as String;
+			HotKey key = Configs.Properties["HotKey"] as HotKey;
+			if (key == null)
+				ToggleBind.keyBind = new List<Keys>();
+			else
+				ToggleBind.keyBind = key.KeyList;
+
+			ToggleBind.updateText();
+			ExitWith.IsChecked = (bool)Configs.Properties["ExitWithProgram"];
+			TargetWindow.Text = Configs.Properties["TargetTitle"] as String;
 		}
 
 		private void OkButton_Click(object sender, RoutedEventArgs e) {
@@ -75,7 +85,7 @@ namespace WPF_Crosshair {
 			}
 
 			Configs.Properties["ImagePath"] = FilePath.Text;
-			Configs.Properties["HotKey"] = ToggleBind.keyBind;
+			Configs.Properties["HotKey"] = new HotKey(ToggleBind.keyBind);
 			Configs.Properties["ExitWithProgram"] = ExitWith.IsChecked;
 			Configs.Properties["TargetTitle"] = TargetWindow.Text;
 

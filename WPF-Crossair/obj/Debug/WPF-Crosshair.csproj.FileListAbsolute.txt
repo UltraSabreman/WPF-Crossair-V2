@@ -43,3 +43,4 @@ C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossa
 C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\obj\Debug\WPF-Crosshair.csproj.GenerateResource.Cache
 C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\obj\Debug\WPF-Crossair.exe
 C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\obj\Debug\WPF-Crossair.pdb
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\obj\Debug\WPF-Crosshair.csprojResolveAssemblyReference.cache

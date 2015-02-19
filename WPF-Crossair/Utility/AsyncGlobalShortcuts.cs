@@ -30,11 +30,9 @@ public class HotKey {
     public HotKey(params object [] hotkeys) {
 		KeyList = new List<Keys>();
         isDown = false;
-		foreach (Keys k in hotkeys) {
+		foreach (Keys k in hotkeys) 
             KeyList.Add(k);
-            //Debug.WriteLine(((Keys)k).ToString());
-        }
-
+        
     }
 
 	public override bool Equals(Object o) {
@@ -72,15 +70,15 @@ public sealed class AsyncGlobalShortcuts : IDisposable {
     [DllImport("user32.dll")]
 	private static extern short GetAsyncKeyState(Keys vKey);
 
-    static private List<HotKey> keys = new List<HotKey>();
+	private List<HotKey> keys = new List<HotKey>();
+	private Object locker = new Object();
+	private AutoResetEvent autoEvent;
+	private System.Threading.Timer keyTimer;
 
     public event EventHandler<KeyPressedEventArgs> KeyDown;
     public event EventHandler<KeyPressedEventArgs> KeyUp;
     public event EventHandler<KeyPressedEventArgs> KeyPressed;
 
-
-	private AutoResetEvent autoEvent;
-	private System.Threading.Timer keyTimer;
 
 	public AsyncGlobalShortcuts() {
 		autoEvent = new AutoResetEvent(false);
@@ -88,42 +86,42 @@ public sealed class AsyncGlobalShortcuts : IDisposable {
     }
 
 	private void CheckForKeys(object call) {
-		try {
-			foreach (HotKey k in keys) {
-				if (k != null) {
-					if (k.KeyList != null) {
-						if (k.KeyList.Count != 0) {
-							bool allPressed = true;
-							foreach (Keys key in k.KeyList) {
-								if (!isKeyPressed(key)) {
-									allPressed = false;
-									break;
-								}
-							}
+		lock (locker) {
+			try {
+				foreach (HotKey k in keys) {
+					if (k == null) continue;
+					if (k.KeyList == null) continue;
+					if (k.KeyList.Count == 0) continue;
 
-							if (allPressed && !k.isDown) {
-								k.isDown = true;
-
-								if (KeyDown != null)
-									KeyDown(this, new KeyPressedEventArgs(k));
-							}
-							if (!allPressed && k.isDown) {
-
-								k.isDown = false;
-
-								if (KeyUp != null)
-									KeyUp(this, new KeyPressedEventArgs(k));
-								if (KeyPressed != null)
-									KeyPressed(this, new KeyPressedEventArgs(k));
-								//for some odd reason, the above statement triggers the InvalidOperationException sometimes.
-								//Not sure what the cause is, but keeping it as the last thing seems like a good idea for now
-								//(aside from adding try{} blocks for each call)
-							}
+					bool allPressed = true;
+					foreach (Keys key in k.KeyList) {
+						if (!isKeyPressed(key)) {
+							allPressed = false;
+							break;
 						}
 					}
+
+					if (allPressed && !k.isDown) {
+						k.isDown = true;
+
+						if (KeyDown != null)
+							KeyDown(this, new KeyPressedEventArgs(k));
+					}
+					if (!allPressed && k.isDown) {
+
+						k.isDown = false;
+
+						if (KeyUp != null)
+							KeyUp(this, new KeyPressedEventArgs(k));
+						if (KeyPressed != null)
+							KeyPressed(this, new KeyPressedEventArgs(k));
+						//for some odd reason, the above statement triggers the InvalidOperationException sometimes.
+						//Not sure what the cause is, but keeping it as the last thing seems like a good idea for now
+						//(aside from adding try{} blocks for each call)
+					}
 				}
-			}
-		} catch (System.InvalidOperationException) {}
+			} catch (System.InvalidOperationException) { }
+		}
 	}
 
 	static private bool isKeyPressed(Keys code) {
@@ -141,13 +139,15 @@ public sealed class AsyncGlobalShortcuts : IDisposable {
     /// </summary>
     /// <param name="hotkeys">Any and all modifiers you wish to add</param>
     public HotKey RegisterHotKey(params object [] hotkeys) {
-		List<Keys> temp = new List<Keys>();
-		foreach (Keys k in hotkeys)
-            temp.Add(k);
+		lock (locker) {
+			List<Keys> temp = new List<Keys>();
+			foreach (Keys k in hotkeys)
+				temp.Add(k);
 
-        HotKey t = new HotKey(temp);
-        keys.Add(t);
-        return t;
+			HotKey t = new HotKey(temp);
+			keys.Add(t);
+			return t;
+		}
     }
 
     /// <summary>
@@ -155,7 +155,9 @@ public sealed class AsyncGlobalShortcuts : IDisposable {
     /// </summary>
     /// <param name="hotkey">A HotKey Struct</param>
     public void RegisterHotKey(HotKey hotkey) {
-        keys.Add(hotkey);
+		lock (locker) {
+			keys.Add(hotkey);
+		}
     }
 
     /// <summary>
@@ -163,14 +165,18 @@ public sealed class AsyncGlobalShortcuts : IDisposable {
     /// </summary>
     /// <param name="hotkey">A HotKey Struct</param>
     public void UnregisterHotKey(HotKey hotkey) {
-        if (keys.Contains(hotkey)) {
-            keys.Remove(hotkey);
-        } else
-            throw new InvalidOperationException("Couldn’t unregister the hot key.");
+		lock (locker) {
+			if (keys.Contains(hotkey)) {
+				keys.Remove(hotkey);
+			} else
+				throw new InvalidOperationException("Couldn’t unregister the hot key.");
+		}
     }
 
 	public void UnregisterAll() {
-		keys.Clear();
+		lock (locker) {
+			keys.Clear();
+		}
 	}
 
     #region IDisposable Members
