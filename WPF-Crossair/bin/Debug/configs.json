@@ -1,8 +1,9 @@
 {
   "ExitWithProgram": false,
   "ImagePath": "ret.png",
-  "TargetTitle": "Lolwut",
-  "HotKey": [
-    52
-  ]
+  "TargetTitle": "Cal.*",
+  "HotKey": {
+    "KeyList": [],
+    "isDown": false
+  }
 }

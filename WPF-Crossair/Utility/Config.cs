@@ -44,7 +44,17 @@ namespace WPF_Crosshair {
 				Initilize();
 			}
 		}
-		
+
+
+		public static T convertTo<T>(Object o) {
+			try {
+				Newtonsoft.Json.Linq.JObject jo = (Newtonsoft.Json.Linq.JObject)o;
+				return (T)jo.ToObject(typeof(T));
+			} catch (Exception) {
+				return (T)o;
+			}
+		}
+
 		//Reads the config file
 		private static void ReadConfigs() {
 			using (StreamReader rd = new StreamReader(path)) {

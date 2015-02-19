@@ -17,6 +17,7 @@ using System.Threading;
 using System.Windows.Threading;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using Newtonsoft.Json.Linq;
 //using System.Drawing;
 
 
@@ -66,8 +67,8 @@ namespace WPF_Crosshair {
 			this.Closed += OnClose;
 
 			updateTimer = new Timer(OnTick, null, 0, 1000);
-
-			hotKeys.RegisterHotKey(Configs.Properties["HotKey"] as HotKey);
+			HotKey test = Configs.convertTo<HotKey>(Configs.Properties["HotKey"]);
+			hotKeys.RegisterHotKey(test);
 			hotKeys.KeyPressed += hotkeyHandler;
 
 			try {

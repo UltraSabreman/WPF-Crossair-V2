@@ -35,7 +35,7 @@ namespace WPF_Crosshair {
 			InitializeComponent();
 			
 			FilePath.Text = Configs.Properties["ImagePath"] as String;
-			HotKey key = Configs.Properties["HotKey"] as HotKey;
+			HotKey key = Configs.convertTo<HotKey>(Configs.Properties["HotKey"]);
 			if (key == null)
 				ToggleBind.keyBind = new List<Keys>();
 			else
@@ -60,7 +60,7 @@ namespace WPF_Crosshair {
 			}
 
 			FilePath.Text = Configs.Properties["ImagePath"] as String;
-			HotKey key = Configs.Properties["HotKey"] as HotKey;
+			HotKey key = Configs.convertTo<HotKey>(Configs.Properties["HotKey"]);
 			if (key == null)
 				ToggleBind.keyBind = new List<Keys>();
 			else
@@ -117,6 +117,7 @@ namespace WPF_Crosshair {
 		}
 
 		private void TestTarget_Click(object sender, RoutedEventArgs e) {
+			tempWindow.setWindowTitleRegex(TargetWindow.Text);
 			tempWindow.test();
 		}
 	}

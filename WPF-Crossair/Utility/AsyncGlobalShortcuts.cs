@@ -90,7 +90,7 @@ public sealed class AsyncGlobalShortcuts : IDisposable {
 			try {
 				foreach (HotKey k in keys) {
 					if (k == null) continue;
-					if (k.KeyList == null) continue;
+					if (k != null && k.KeyList == null) continue;
 					if (k.KeyList.Count == 0) continue;
 
 					bool allPressed = true;
@@ -139,6 +139,7 @@ public sealed class AsyncGlobalShortcuts : IDisposable {
     /// </summary>
     /// <param name="hotkeys">Any and all modifiers you wish to add</param>
     public HotKey RegisterHotKey(params object [] hotkeys) {
+		
 		lock (locker) {
 			List<Keys> temp = new List<Keys>();
 			foreach (Keys k in hotkeys)
