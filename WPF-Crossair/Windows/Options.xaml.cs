@@ -21,40 +21,38 @@ namespace WPF_Crosshair {
 	/// Interaction logic for Options.xaml
 	/// </summary>
 	public partial class Options : Window {
-		private Config configs = null;
-		private Config tempConfig = new Config();
+	
 		private GameWindow tempWindow = null;
 
-		public delegate void Done(Config c, GameWindow wind);
+		public delegate void Done(GameWindow wind);
 		public event Done OnAccept;
 
-		public Options(Config configin) {
+
+		public Options() {
 			tempWindow = new GameWindow(null, null);
 			tempWindow.isEnabled = false;
 
 			InitializeComponent();
 
 			ToggleBind.OnNewBind += BindChanged;
-			configs = configin;
-			tempConfig = configs;
-
-			FilePath.Text = configs.CrosshairPath;
+			
+			FilePath.Text = Configs.Properties["ImagePath"] as String;
 			FilePath.TextWrapping = TextWrapping.NoWrap;
-			ToggleBind.keyBind = configs.ShowHideCrosshair != null ? configs.ShowHideCrosshair.KeyList : new List<Keys>();
+			ToggleBind.keyBind = Configs.Properties["HotKey"] as List<Keys> ?? new List<Keys>();
 			ToggleBind.updateText();
-			ExitWith.IsChecked = configs.ExitWithProgram;
-			TargetWindow.Text = configs.TargetWindowTitle;
+			ExitWith.IsChecked = (bool) Configs.Properties["ExitWithProgram"];
+			TargetWindow.Text = Configs.Properties["TargetTitle"] as String;
 
 			this.ResizeMode = System.Windows.ResizeMode.NoResize;
 		}
 
 		private void BindChanged(List<Keys> bind) {
-			tempConfig.ShowHideCrosshair = new HotKey(bind);
+			Configs.Properties["HotKey"] = new HotKey(bind);
 		}
 
 		private void ReloadButton_Click(object sender, RoutedEventArgs e) {
 			try {
-				tempWindow.LoadImage(tempConfig.CrosshairPath);
+				tempWindow.LoadImage(Configs.Properties["ImagePath"] as String);
 				System.Windows.MessageBox.Show("Crosshair loaded successfully!", "Loaded", System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);			
 			} catch (FileLoadException) {
 				System.Windows.MessageBox.Show("Crosshair failed to load, is it corrupted?", "Failed to load", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);			
@@ -64,10 +62,10 @@ namespace WPF_Crosshair {
 		}
 
 		private void OkButton_Click(object sender, RoutedEventArgs e) {
-			tempConfig.CrosshairPath = FilePath.Text;
+			Configs.Properties["ImagePath"] = FilePath.Text;
 
 			try {
-				tempWindow.LoadImage(tempConfig.CrosshairPath);			
+				tempWindow.LoadImage(Configs.Properties["ImagePath"] as String);			
 			} catch (FileLoadException) {
 				System.Windows.MessageBox.Show("Crosshair failed to load, is it corrupted?", "Failed to load", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
@@ -76,8 +74,13 @@ namespace WPF_Crosshair {
 				return;
 			}
 
+			Configs.Properties["ImagePath"] = FilePath.Text;
+			Configs.Properties["HotKey"] = ToggleBind.keyBind;
+			Configs.Properties["ExitWithProgram"] = ExitWith.IsChecked;
+			Configs.Properties["TargetTitle"] = TargetWindow.Text;
+
 			if (OnAccept != null)
-				OnAccept(tempConfig, tempWindow);
+				OnAccept(tempWindow);
 
 			this.Close();
 		}
@@ -100,22 +103,7 @@ namespace WPF_Crosshair {
 			{ 
 				string filename = diag.FileName;
 				FilePath.Text = filename;
-				tempConfig.CrosshairPath = filename;
 			}
-		}
-
-		private void ExitWith_Checked(object sender, RoutedEventArgs e) {
-			tempConfig.ExitWithProgram = ExitWith.IsChecked != null ? (bool)ExitWith.IsChecked : false;
-			Console.WriteLine(tempConfig.ExitWithProgram.ToString());
-		}
-
-		private void FilePath_TextChanged(object sender, TextChangedEventArgs e) {
-			tempConfig.CrosshairPath = FilePath.Text;
-		}
-
-		private void TargetWindow_TextChanged(object sender, TextChangedEventArgs e) {
-			tempConfig.TargetWindowTitle = TargetWindow.Text;
-			tempWindow.setWindowTitleRegex(TargetWindow.Text);
 		}
 
 		private void TestTarget_Click(object sender, RoutedEventArgs e) {

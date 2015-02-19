@@ -40,17 +40,17 @@ namespace WPF_Crosshair {
 			Console.Error.WriteLine("-----" + DateTime.Now + "-----");
 		}
 		 static Assembly resolveDll(object sender, ResolveEventArgs args) {
-			 using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("WPF_Crosshair.Newtonsoft.Json.dll")) {
+			 using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("WPF_Crosshair.Resources.Newtonsoft.Json.dll")) {
 				byte[] assemblyData = new byte[stream.Length];
 				stream.Read(assemblyData, 0, assemblyData.Length);
 				return Assembly.Load(assemblyData);
 			}
 
-			 using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("WPF_Crosshair.Hardcodet.Wpf.TaskbarNotification.dll")) {
+			 /*using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("WPF_Crosshair.Hardcodet.Wpf.TaskbarNotification.dll")) {
 				 byte [] assemblyData = new byte [stream.Length];
 				 stream.Read(assemblyData, 0, assemblyData.Length);
 				 return Assembly.Load(assemblyData);
-			 }
+			 }*/
 		}
 		 
 

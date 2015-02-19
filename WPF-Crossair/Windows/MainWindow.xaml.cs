@@ -26,7 +26,6 @@ namespace WPF_Crosshair {
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
 	public partial class MainWindow : Window {
-		private Config configs = new Config();
 		private bool enabled = true;
 		private bool focused = false;
 		private Timer updateTimer = null;
@@ -40,13 +39,7 @@ namespace WPF_Crosshair {
 			InitializeComponent();
 
 			//Sets the windows properties
-			this.WindowStyle = System.Windows.WindowStyle.None;
-			this.Focusable = false;
-			this.ShowInTaskbar = false;
-			this.Topmost = false;
-			this.ShowActivated = false;
 			this.Hide();
-			this.Opacity = 0;
 
 			TrayIcon = new System.Windows.Forms.NotifyIcon();
 			TrayIcon.Icon = WPF_Crosshair.Properties.Resources.on;
@@ -58,7 +51,7 @@ namespace WPF_Crosshair {
 			System.Windows.Forms.MenuItem optionsContext = new System.Windows.Forms.MenuItem("Options", OptionsContext_Click);
 
 			System.Windows.Forms.MenuItem exitContext = new System.Windows.Forms.MenuItem("Exit", (object s, EventArgs a) => {
-				System.Windows.Application.Current.Shutdown();
+				Application.Current.Shutdown();
 			});
 
 			TrayIcon.ContextMenu.MenuItems.Add(enabledContext);
@@ -69,32 +62,18 @@ namespace WPF_Crosshair {
 			TrayIcon.DoubleClick += delegate(object sender, EventArgs args) { ToggleThing(); };
 
 
-			//try to read in the options file
-			try {
-				DataReader.Deserialize(configs);
-			} catch (FileNotFoundException) {}
-
-			if (!configs.Initilized) {
-				configs.Initilized = true;
-				configs.ResetHotKeys();
-			}
-
 			//register events and start the main update clock.
 			this.Closed += OnClose;
 
 			updateTimer = new Timer(OnTick, null, 0, 1000);
 
-			hotKeys.RegisterHotKey(configs.ShowHideCrosshair);
+			hotKeys.RegisterHotKey(Configs.Properties["HotKey"] as HotKey);
 			hotKeys.KeyPressed += hotkeyHandler;
 
 			try {
-				//if (configs.CrosshairPath != null && File.Exists(configs.CrosshairPath))
-					testWindow = new GameWindow(configs.TargetWindowTitle, configs.CrosshairPath);
-					testWindow.isEnabled = true;
-					ChangeIcon();
-				//else
-				//	testWindow = new GameWindow(null, null);
-
+				testWindow = new GameWindow(Configs.Properties["TargetTitle"] as String, Configs.Properties["ImagePath"] as String);
+				testWindow.isEnabled = true;
+				ChangeIcon();
 			} catch (FileNotFoundException) {
 				MessageBoxResult res = MessageBox.Show("Can't find a crosshair.\nWould you like to set it's location?", "No Crosshair", System.Windows.MessageBoxButton.OKCancel, MessageBoxImage.Error);
 				if (res == MessageBoxResult.Cancel)
@@ -108,7 +87,7 @@ namespace WPF_Crosshair {
 		public void OnClose(object o, EventArgs e) {
 			TrayIcon.Visible = false;
 			TrayIcon.Dispose();
-			DataReader.Serialize(configs);
+			Configs.Properties.Save();
 		}
 
 		private void OnTick(object call) {
@@ -118,14 +97,14 @@ namespace WPF_Crosshair {
 			this.Dispatcher.Invoke(new Action(() => { 
 				ChangeIcon();
 
-				if (!testWindow.hasWindow && configs.ExitWithProgram)
+				if (!testWindow.hasWindow && (bool) Configs.Properties["ExitWithProgram"])
 					Application.Current.Shutdown();
 			}));
 
 		}
 
 		private void hotkeyHandler(object source, KeyPressedEventArgs e) {
-			if (e.Key == configs.ShowHideCrosshair) {
+			if (e.Key == (Configs.Properties["HotKey"] as HotKey)) {
 				ToggleThing();
 			}
 		}
@@ -146,13 +125,13 @@ namespace WPF_Crosshair {
 		}
 
 		private void OptionsContext_Click(object sender, EventArgs e) {
-			var test = new Options(configs);
+			var test = new Options();
 			test.OnAccept += OptionsAccept;
 			test.Show();
 		}
 
-		private void OptionsAccept(Config src, GameWindow newWind) {
-			hotKeys.UnregisterHotKey(configs.ShowHideCrosshair);
+		private void OptionsAccept(GameWindow newWind) {
+			/*hotKeys.UnregisterHotKey(configs.ShowHideCrosshair);
 			configs = src;
 			hotKeys.RegisterHotKey(configs.ShowHideCrosshair);
 
@@ -170,7 +149,8 @@ namespace WPF_Crosshair {
 			testWindow.isEnabled = en;
 
 			ChangeIcon();
-			DataReader.Serialize(configs);
+			DataReader.Serialize(configs);*/
+			Configs.Properties.Save();
 		}
 
 		private void ToggleThing() {

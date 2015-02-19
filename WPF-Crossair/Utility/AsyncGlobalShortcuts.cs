@@ -89,38 +89,41 @@ public sealed class AsyncGlobalShortcuts : IDisposable {
 
 	private void CheckForKeys(object call) {
 		try {
-			for (int i = 0; i < keys.Count; i++) {
-				HotKey k = keys [i];
-				if (k == null || k.KeyList == null) continue;
-				bool allPressed = true;
-				foreach (Keys key in k.KeyList) {
-					if (!isKeyPressed(key)) {
-						allPressed = false;
-						break;
+			foreach (HotKey k in keys) {
+				if (k != null) {
+					if (k.KeyList != null) {
+						if (k.KeyList.Count != 0) {
+							bool allPressed = true;
+							foreach (Keys key in k.KeyList) {
+								if (!isKeyPressed(key)) {
+									allPressed = false;
+									break;
+								}
+							}
+
+							if (allPressed && !k.isDown) {
+								k.isDown = true;
+
+								if (KeyDown != null)
+									KeyDown(this, new KeyPressedEventArgs(k));
+							}
+							if (!allPressed && k.isDown) {
+
+								k.isDown = false;
+
+								if (KeyUp != null)
+									KeyUp(this, new KeyPressedEventArgs(k));
+								if (KeyPressed != null)
+									KeyPressed(this, new KeyPressedEventArgs(k));
+								//for some odd reason, the above statement triggers the InvalidOperationException sometimes.
+								//Not sure what the cause is, but keeping it as the last thing seems like a good idea for now
+								//(aside from adding try{} blocks for each call)
+							}
+						}
 					}
 				}
-
-				if (allPressed && !k.isDown) {
-					k.isDown = true;
-
-					if (KeyDown != null)
-						KeyDown(this, new KeyPressedEventArgs(k));
-				}
-				if (!allPressed && k.isDown) {
-
-					k.isDown = false;
-
-					if (KeyUp != null)
-						KeyUp(this, new KeyPressedEventArgs(k));
-					if (KeyPressed != null)
-						KeyPressed(this, new KeyPressedEventArgs(k));
-					//for some odd reason, the above statement triggers the InvalidOperationException sometimes.
-					//Not sure what the cause is, but keeping it as the last thing seems like a good idea for now
-					//(aside from adding try{} blocks for each call)
-				}
 			}
-		} catch (System.InvalidOperationException) {
-		}
+		} catch (System.InvalidOperationException) {}
 	}
 
 	static private bool isKeyPressed(Keys code) {

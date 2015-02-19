@@ -86,14 +86,14 @@
 				</WindowsFormsHost>
 			</Grid>
 		</GroupBox>
-		<CheckBox x:Name="ExitWith" Content="Exit With Program" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,125,0,0" Checked="ExitWith_Checked" Unchecked="ExitWith_Checked"/>
+		<CheckBox x:Name="ExitWith" Content="Exit With Program" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,125,0,0" />
 		<TextBox Tag="Set the target Window (you can use regex)."  x:Name="TargetWindow" HorizontalAlignment="Left" Height="23" Margin="10,69,0,0" TextWrapping="Wrap" 
-				 Text="" VerticalAlignment="Top" Width="289" Style="{DynamicResource TextBoxStyle1}" TextChanged="TargetWindow_TextChanged" />
+				 Text="" VerticalAlignment="Top" Width="289" Style="{DynamicResource TextBoxStyle1}"  />
 		<Button x:Name="CancelButton" Content="Cancel" HorizontalAlignment="Left" Width="75" Margin="260,0,0,10" Height="20" VerticalAlignment="Bottom" Click="CancelButton_Click"/>
 		<Button x:Name="OkButton" Content="Ok" Margin="180,0,0,10" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75" Click="OkButton_Click"/>
 		<Button x:Name="ReloadButton" Content="Reload Crosshair" Margin="10,0,0,10" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="97" Click="ReloadButton_Click"/>
 		<TextBox Tag="Crosshair File Path"  x:Name="FilePath" HorizontalAlignment="Left" Height="23" Margin="10,97,0,0" TextWrapping="Wrap" 
-			Text="" VerticalAlignment="Top" Width="289" Style="{DynamicResource TextBoxStyle1}" TextChanged="FilePath_TextChanged"/>
+			Text="" VerticalAlignment="Top" Width="289" Style="{DynamicResource TextBoxStyle1}" />
 		<Button x:Name="BrowseButton" Content="..." Margin="304,97,0,0" Height="23" VerticalAlignment="Top" HorizontalAlignment="Left" Width="34" Click="BrowseButton_Click"/>
 		<Button x:Name="TestTarget"  Content="Test" HorizontalAlignment="Left" VerticalAlignment="Top" Width="34" Margin="304,69,0,0" Height="23" Click="TestTarget_Click"/>
 	</Grid>

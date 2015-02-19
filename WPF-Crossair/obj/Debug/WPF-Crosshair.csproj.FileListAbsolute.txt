@@ -22,3 +22,24 @@ C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Debug\App.g.cs
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\obj\Debug\Options.baml
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\bin\Debug\Newtonsoft.Json.pdb
 C:\Users\Andrey\Documents\Code\WPF-Crossair\WPF-Crossair\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\obj\Debug\Windows\MainWindow.baml
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\obj\Debug\Windows\MainWindow.g.cs
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\obj\Debug\Windows\Options.g.cs
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\obj\Debug\App.g.cs
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\obj\Debug\WPF-Crossair_MarkupCompile.cache
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\obj\Debug\WPF-Crossair_MarkupCompile.lref
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\bin\Debug\Resources\off.ico
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\bin\Debug\Resources\on.ico
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\bin\Debug\Resources\paused.ico
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\bin\Debug\Resources\test.ico
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\bin\Debug\WPF-Crossair.exe.config
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\bin\Debug\WPF-Crossair.exe
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\bin\Debug\WPF-Crossair.pdb
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\obj\Debug\Windows\Options.baml
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\obj\Debug\WPF-Crossair.g.resources
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\obj\Debug\WPF_Crosshair.Properties.Resources.resources
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\obj\Debug\WPF-Crosshair.csproj.GenerateResource.Cache
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\obj\Debug\WPF-Crossair.exe
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\obj\Debug\WPF-Crossair.pdb
