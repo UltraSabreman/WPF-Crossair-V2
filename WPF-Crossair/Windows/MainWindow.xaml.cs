@@ -35,7 +35,6 @@ namespace WPF_Crosshair {
 
 		public MainWindow() {
 			InitializeComponent();
-			this.Hide();
 
 
 			test = new MainModel(this);
@@ -48,7 +47,6 @@ namespace WPF_Crosshair {
 
 			updateTimer.Start();
 
-			this.Show();
 		}
 
 		private void buildTray() {

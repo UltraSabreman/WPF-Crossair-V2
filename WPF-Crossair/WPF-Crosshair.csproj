@@ -71,7 +71,7 @@
     </ApplicationDefinition>
     <Compile Include="GameWindow.cs" />
     <Compile Include="Windows\PropChanged.cs" />
-    <Compile Include="Windows\ValueConverters.cs" />
+    <Compile Include="Windows\Converters\ValueConverters.cs" />
     <Compile Include="Windows\ViewModels\MainModel.cs" />
     <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

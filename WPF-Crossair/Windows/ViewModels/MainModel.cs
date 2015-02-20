@@ -36,14 +36,17 @@ namespace WPF_Crosshair {
 
 			mainWindow = win;
 
-			win.DataContext = this;
-			win.RetImage.DataContext = this;
-			Haax.SetWindowExTransparent(new WindowInteropHelper(win).Handle);
-
+			mainWindow.DataContext = this;
+			mainWindow.RetImage.DataContext = this;
 			IsEnabled = true;
-
-			LoadImage(Configs.Properties["ImagePath"] as String);
 			TopMost = true;
+
+			//TOOD: error handle.
+			LoadImage(Configs.Properties["ImagePath"] as String);
+
+			mainWindow.Show();
+			//This has to happen after the window is visible (aka after show)
+			Haax.SetWindowExTransparent(new WindowInteropHelper(mainWindow).Handle);
 		}
 
 		public void Update(Object o, EventArgs e) {

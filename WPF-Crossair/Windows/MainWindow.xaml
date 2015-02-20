@@ -6,7 +6,7 @@
 		WindowStyle="None" Focusable="False" ShowInTaskbar="False" Background="Transparent"
 		Topmost="{Binding TopMost}" ShowActivated="False" AllowsTransparency="True"
 		Opacity="{Binding Opacity}" Left="{Binding Left, Mode=TwoWay}" Top="{Binding Top, Mode=TwoWay}"
-		IsEnabled="{Binding IsEnabled}" IsHitTestVisible="False">
+		IsEnabled="{Binding IsEnabled}">
 	<Window.Resources>
 		<ContextMenu x:Name="TrayContext" x:Key="TrayContext">
 			<MenuItem Header="Toggle" />
@@ -15,5 +15,5 @@
 			<MenuItem Header="Exit" />
 		</ContextMenu>
 	</Window.Resources>
-		<Image Name="RetImage" Source="{Binding Reticule}" IsHitTestVisible="False"></Image>
+		<Image Name="RetImage" Source="{Binding Reticule}"></Image>
 </Window>
