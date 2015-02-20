@@ -39,6 +39,9 @@
   <PropertyGroup>
     <ApplicationIcon>Resources\test.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -67,6 +70,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="GameWindow.cs" />
+    <Compile Include="Windows\PropChanged.cs" />
+    <Compile Include="Windows\ValueConverters.cs" />
+    <Compile Include="Windows\ViewModels\MainModel.cs" />
     <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

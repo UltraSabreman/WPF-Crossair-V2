@@ -1,0 +1,11 @@
+{
+  "ExitWithProgram": false,
+  "ImagePath": "ret.png",
+  "TargetTitle": "Calc.*",
+  "HotKey": {
+    "KeyList": [
+      115
+    ],
+    "isDown": false
+  }
+}

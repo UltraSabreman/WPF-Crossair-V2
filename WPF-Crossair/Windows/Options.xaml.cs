@@ -51,7 +51,7 @@ namespace WPF_Crosshair {
 
 		private void ReloadButton_Click(object sender, RoutedEventArgs e) {
 			try {
-				tempWindow.LoadImage(Configs.Properties["ImagePath"] as String);
+				//tempWindow.LoadImage(Configs.Properties["ImagePath"] as String);
 				System.Windows.MessageBox.Show("Crosshair loaded successfully!", "Loaded", System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);			
 			} catch (FileLoadException) {
 				System.Windows.MessageBox.Show("Crosshair failed to load, is it corrupted?", "Failed to load", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);			
@@ -75,7 +75,7 @@ namespace WPF_Crosshair {
 			Configs.Properties["ImagePath"] = FilePath.Text;
 
 			try {
-				tempWindow.LoadImage(Configs.Properties["ImagePath"] as String);			
+				//tempWindow.LoadImage(Configs.Properties["ImagePath"] as String);			
 			} catch (FileLoadException) {
 				System.Windows.MessageBox.Show("Crosshair failed to load, is it corrupted?", "Failed to load", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
 				return;

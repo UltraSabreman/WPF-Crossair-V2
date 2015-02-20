@@ -42,6 +42,9 @@ namespace WPF_Crosshair {
 		}
 
 		[DllImport("Kernel32.dll", SetLastError = true)]
-		public static extern int SetStdHandle(int device, IntPtr handle); 
+		public static extern int SetStdHandle(int device, IntPtr handle);
+
+		[DllImport("kernel32.dll")]
+		public static extern bool AllocConsole();
 	}
 }

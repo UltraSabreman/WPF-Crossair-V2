@@ -14,12 +14,12 @@ using System.Windows.Interop;
 
 namespace WPF_Crosshair {
 	public class GameWindow {
-		private Regex windowRegex = null;
 		private Window overlay = null;
 		private BitmapImage crosshair = null;
 		public bool isFocused { get; private set; }
 		public bool isEnabled { get; set; }
 		public bool hasWindow { get; private set; }
+		private Regex windowRegex = null;
 
 		public GameWindow(String regex, String imgPath) {
 			if (regex != null)
@@ -40,8 +40,8 @@ namespace WPF_Crosshair {
 			overlay.Show();
 			Haax.SetWindowExTransparent(new WindowInteropHelper(overlay).Handle);
 
-			if (imgPath != null)
-				LoadImage(imgPath);
+			//if (imgPath != null)
+			//	LoadImage(imgPath);
 
 			hasWindow = true; //set to true at first so it has a chance to load
 		}
@@ -50,40 +50,7 @@ namespace WPF_Crosshair {
 		/// Repositiones the pverlay and toggles its visibility
 		/// </summary>
 		public void OnTick() {
-			if (!isEnabled || windowRegex == null || crosshair == null) { overlay.Dispatcher.Invoke(new Action(() => { overlay.Opacity = 0; })); return; }
-			IntPtr GameWindow = IntPtr.Zero;
 
-			try {
-				GameWindow = Process.GetProcesses().FirstOrDefault(x => windowRegex.Match(x.MainWindowTitle).Success).MainWindowHandle;
-				if (GameWindow == Haax.GetForegroundWindow()) {
-					isFocused = true;
-					hasWindow = true;
-				} else {
-					hasWindow = true;
-					isFocused = false;
-				}
-			} catch (System.NullReferenceException) {
-				isFocused = false;
-				hasWindow = false;
-				overlay.Dispatcher.Invoke(new Action(() => { overlay.Opacity = 0; }));
-				return;
-			}
-
-			Haax.RECT tempSize = new Haax.RECT();
-			Haax.GetWindowRect(GameWindow, ref tempSize);
-
-			overlay.Dispatcher.Invoke(new Action(() => {
-				if (isFocused)
-					overlay.Opacity = 100;
-				else
-					overlay.Opacity = 0;					
-
-				double newX = ((double)tempSize.Left + ((double)tempSize.Right - (double)tempSize.Left) / 2 - overlay.Width / 2);
-				double newY = ((double)tempSize.Top + ((double)tempSize.Bottom - (double)tempSize.Top) / 2 - overlay.Height / 2);
-
-				overlay.Left = newX;
-				overlay.Top = newY;
-			}));
 		}
 
 		/// <summary>
@@ -108,40 +75,7 @@ namespace WPF_Crosshair {
 				MessageBox.Show("Can't find window!\nIs your app running?", "No Match", System.Windows.MessageBoxButton.OK, MessageBoxImage.Warning);			
 		}
 
-		/// <summary>
-		/// Tries to load the indicated image.
-		/// </summary>
-		/// <param name="Path">The image filepath</param>
-		/// <returns>True if image is loaded succesfully</returns>
-		/// <exception cref="FileLoadException"/>
-		/// <exception cref="FileNotFoundException"/>
-		public bool LoadImage(String Path) {
-			Path = System.IO.Path.Combine(Environment.CurrentDirectory, Path);
 
-			if (!File.Exists(Path)) {
-				throw new FileNotFoundException("Crosshair not found!");
-
-			} else {
-				crosshair = new BitmapImage();
-				crosshair.DownloadFailed += (object o, ExceptionEventArgs e) => { throw new FileLoadException("Failed to load crosshair. File might be corrupted?"); };
-
-				try {
-					crosshair.BeginInit();
-					crosshair.UriSource = new Uri(Path);
-					crosshair.EndInit();
-				} catch (Exception) { throw new FileLoadException("Failed to load crosshair. File might be corrupted?"); }
-
-
-				overlay.Width = crosshair.PixelWidth;
-				overlay.Height = crosshair.PixelHeight;
-
-				getOverlay().Source = crosshair;
-				getOverlay().Width = crosshair.PixelWidth;
-				getOverlay().Height = crosshair.PixelHeight;
-
-				return true;
-			}
-		}
 
 		/// <summary>
 		/// Gets the image control
