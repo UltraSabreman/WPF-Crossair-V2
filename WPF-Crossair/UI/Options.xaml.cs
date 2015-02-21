@@ -22,26 +22,26 @@ namespace WPF_Crosshair {
 	/// </summary>
 	public partial class Options : Window {
 	
-		private GameWindow tempWindow = null;
+		//private GameWindow tempWindow = null;
 
-		public delegate void Done(GameWindow wind);
-		public event Done OnAccept;
+		//public delegate void Done(GameWindow wind);
+		//public event Done OnAccept;
 
 
 		public Options() {
-			tempWindow = new GameWindow(null, null);
-			tempWindow.isEnabled = false;
+			//tempWindow = new GameWindow(null, null);
+			//tempWindow.isEnabled = false;
 
 			InitializeComponent();
 			
 			FilePath.Text = Configs.Properties["ImagePath"] as String;
 			HotKey key = Configs.convertTo<HotKey>(Configs.Properties["HotKey"]);
-			if (key == null)
+			/*if (key == null)
 				ToggleBind.keyBind = new List<Keys>();
 			else
-				ToggleBind.keyBind = key.KeyList;
+				ToggleBind.keyBind = key.KeyList;*/
 
-			ToggleBind.updateText();
+			//ToggleBind.updateText();
 			ExitWith.IsChecked = (bool) Configs.Properties["ExitWithProgram"];
 			TargetWindow.Text = Configs.Properties["TargetTitle"] as String;
 
@@ -61,12 +61,12 @@ namespace WPF_Crosshair {
 
 			FilePath.Text = Configs.Properties["ImagePath"] as String;
 			HotKey key = Configs.convertTo<HotKey>(Configs.Properties["HotKey"]);
-			if (key == null)
+			/*if (key == null)
 				ToggleBind.keyBind = new List<Keys>();
 			else
-				ToggleBind.keyBind = key.KeyList;
+				ToggleBind.keyBind = key.KeyList;*/
 
-			ToggleBind.updateText();
+			//ToggleBind.updateText();
 			ExitWith.IsChecked = (bool)Configs.Properties["ExitWithProgram"];
 			TargetWindow.Text = Configs.Properties["TargetTitle"] as String;
 		}
@@ -85,12 +85,12 @@ namespace WPF_Crosshair {
 			}
 
 			Configs.Properties["ImagePath"] = FilePath.Text;
-			Configs.Properties["HotKey"] = new HotKey(ToggleBind.keyBind);
+			//Configs.Properties["HotKey"] = new HotKey(ToggleBind.keyBind);
 			Configs.Properties["ExitWithProgram"] = ExitWith.IsChecked;
 			Configs.Properties["TargetTitle"] = TargetWindow.Text;
 
-			if (OnAccept != null)
-				OnAccept(tempWindow);
+			//if (OnAccept != null)
+			//	OnAccept(tempWindow);
 
 			this.Close();
 		}
@@ -117,8 +117,8 @@ namespace WPF_Crosshair {
 		}
 
 		private void TestTarget_Click(object sender, RoutedEventArgs e) {
-			tempWindow.setWindowTitleRegex(TargetWindow.Text);
-			tempWindow.test();
+			//tempWindow.setWindowTitleRegex(TargetWindow.Text);
+			//tempWindow.test();
 		}
 	}
 }

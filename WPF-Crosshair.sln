@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF-Crosshair", "WPF-Crossair\WPF-Crosshair.csproj", "{594DC331-2099-465A-9052-6ED2C1F404FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BindButton", "BindButton\BindButton.csproj", "{7165EF0A-1492-4F89-959A-F208FC3C4AE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{594DC331-2099-465A-9052-6ED2C1F404FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{594DC331-2099-465A-9052-6ED2C1F404FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{594DC331-2099-465A-9052-6ED2C1F404FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7165EF0A-1492-4F89-959A-F208FC3C4AE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7165EF0A-1492-4F89-959A-F208FC3C4AE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7165EF0A-1492-4F89-959A-F208FC3C4AE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7165EF0A-1492-4F89-959A-F208FC3C4AE9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

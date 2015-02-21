@@ -41,8 +41,11 @@ namespace WPF_Crosshair {
 			IsEnabled = true;
 			TopMost = true;
 
-			//TOOD: error handle.
-			LoadImage(Configs.Properties["ImagePath"] as String);
+			try {
+				LoadImage(Configs.Properties["ImagePath"] as String);
+			} catch (FileNotFoundException e) {
+				//TODO: handle file not found
+			}
 
 			mainWindow.Show();
 			//This has to happen after the window is visible (aka after show)
@@ -89,13 +92,7 @@ namespace WPF_Crosshair {
 			Top = newY;
 		}
 
-		/// <summary>
-		/// Tries to load the indicated image.
-		/// </summary>
-		/// <param name="Path">The image filepath</param>
-		/// <returns>True if image is loaded succesfully</returns>
-		/// <exception cref="FileLoadException"/>
-		/// <exception cref="FileNotFoundException"/>
+
 		public bool LoadImage(String Path) {
 			Path = System.IO.Path.Combine(Environment.CurrentDirectory, Path);
 
@@ -118,6 +115,24 @@ namespace WPF_Crosshair {
 
 				return true;
 			}
+
+		}
+
+
+		public void focusTargetWindo() {
+			IntPtr GameWindow = IntPtr.Zero;
+			GameWindow = Process.GetProcesses().FirstOrDefault(x => windowRegex.Match(x.MainWindowTitle).Success).MainWindowHandle;
+
+			if (GameWindow != IntPtr.Zero) {
+				Haax.SetForegroundWindow(GameWindow);
+				//TODO: add some more functionality, like highliting?
+			} else
+				MessageBox.Show("Can't find window!\nIs your app running?", "No Match", System.Windows.MessageBoxButton.OK, MessageBoxImage.Warning);
+		}
+
+
+		public void setWindowTitleRegex(String title) {
+			windowRegex = new Regex(title, RegexOptions.Compiled);
 		}
 	}
 }
