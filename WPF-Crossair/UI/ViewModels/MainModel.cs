@@ -41,6 +41,7 @@ namespace WPF_Crosshair {
 			IsEnabled = true;
 			TopMost = true;
 
+
 			try {
 				LoadImage(Configs.Properties["ImagePath"] as String);
 			} catch (FileNotFoundException e) {

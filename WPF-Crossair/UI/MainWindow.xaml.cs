@@ -45,6 +45,9 @@ namespace WPF_Crosshair {
 
 			updateTimer.Elapsed += test.Update;
 
+			Options op = new Options();
+			op.Show();
+
 			updateTimer.Start();
 
 		}

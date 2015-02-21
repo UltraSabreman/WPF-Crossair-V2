@@ -21,6 +21,10 @@ namespace BindButton
         static BindButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BindButton), new FrameworkPropertyMetadata(typeof(BindButton)));
+			
         }
+
+		public BindButton() {
+		}
     }
 }
