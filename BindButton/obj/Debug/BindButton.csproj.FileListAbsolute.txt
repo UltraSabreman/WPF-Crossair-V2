@@ -9,3 +9,4 @@ C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\BindButton
 C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\BindButton\obj\Debug\BindButton.csproj.GenerateResource.Cache
 C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\BindButton\obj\Debug\BindButton.dll
 C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\BindButton\obj\Debug\BindButton.pdb
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\BindButton\obj\Debug\BindButton.csprojResolveAssemblyReference.cache

@@ -69,6 +69,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="UI\ViewModels\OptionsModel.cs" />
     <Compile Include="Utility\PropChanged.cs" />
     <Compile Include="UI\Converters\ValueConverters.cs" />
     <Compile Include="UI\ViewModels\MainModel.cs" />
