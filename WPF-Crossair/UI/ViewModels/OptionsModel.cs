@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace WPF_Crosshair {
+	using System.Diagnostics;
 	using System.IO;
+	using System.Text.RegularExpressions;
 	using System.Windows;
 	using Keys = System.Windows.Forms.Keys;
 	class OptionsModel : ViewModelNotifier {
@@ -16,6 +18,9 @@ namespace WPF_Crosshair {
 		//Hack, find a way to bind this
 		private Options options;
 
+		public delegate void Accepted();
+		public event Accepted OnAccept;
+
 		//TODO: Handle file exceptions
 		//TODO: Handle binds + special cases better
 		//TODO: Handle test button
@@ -23,17 +28,7 @@ namespace WPF_Crosshair {
 		public OptionsModel(Options b) {
 			options = b;
 
-			FilePath = Configs.Properties["ImagePath"] as String;
-			HotKey key = Configs.convertTo<HotKey>(Configs.Properties["HotKey"]);
-			if (key == null)
-				options.ToggleBind.KeyBind = new List<Keys>();
-			else
-				options.ToggleBind.KeyBind = key.KeyList;
-
-			options.ToggleBind.updateText();
-
-			ExitWithProgram = (bool)Configs.Properties["ExitWithProgram"];
-			TargetWindow = Configs.Properties["TargetTitle"] as String;
+			init();
 
 			options.CancelButton.Click += CancelButton_Click;
 			options.OkButton.Click += OkButton_Click;
@@ -43,16 +38,11 @@ namespace WPF_Crosshair {
 		}
 	
 
-	private void ReloadButton_Click(object sender, RoutedEventArgs e) {
-			try {
-				//tempWindow.LoadImage(Configs.Properties["ImagePath"] as String);
-				System.Windows.MessageBox.Show("Crosshair loaded successfully!", "Loaded", System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);			
-			} catch (FileLoadException) {
-				System.Windows.MessageBox.Show("Crosshair failed to load, is it corrupted?", "Failed to load", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);			
-			} catch (FileNotFoundException) {
-				System.Windows.MessageBox.Show("Crosshair file not found.", "File not found", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);			
-			}
+		private void ReloadButton_Click(object sender, RoutedEventArgs e) {
+			init();
+		}
 
+		private void init() {
 			FilePath = Configs.Properties["ImagePath"] as String;
 			HotKey key = Configs.convertTo<HotKey>(Configs.Properties["HotKey"]);
 			if (key == null)
@@ -66,17 +56,6 @@ namespace WPF_Crosshair {
 		}
 
 		private void OkButton_Click(object sender, RoutedEventArgs e) {
-			Configs.Properties["ImagePath"] = FilePath;
-
-			try {
-				//tempWindow.LoadImage(Configs.Properties["ImagePath"] as String);			
-			} catch (FileLoadException) {
-				System.Windows.MessageBox.Show("Crosshair failed to load, is it corrupted?", "Failed to load", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
-				return;
-			} catch (FileNotFoundException) {
-				System.Windows.MessageBox.Show("Crosshair file not found.", "File not found", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
-				return;
-			}
 
 			Configs.Properties["ImagePath"] = FilePath;
 			Configs.Properties["HotKey"] = new HotKey(options.ToggleBind.KeyBind);
@@ -84,8 +63,8 @@ namespace WPF_Crosshair {
 			Configs.Properties["TargetTitle"] = TargetWindow;
 			Configs.Properties.Save();
 
-			//if (OnAccept != null)
-			//	OnAccept(tempWindow);
+			if (OnAccept != null)
+				OnAccept();
 
 			options.Close();
 		}
@@ -112,8 +91,14 @@ namespace WPF_Crosshair {
 		}
 
 		private void TestTarget_Click(object sender, RoutedEventArgs e) {
-			//tempWindow.setWindowTitleRegex(TargetWindow);
-			//tempWindow.test();
+			IntPtr GameWindow = IntPtr.Zero;
+			GameWindow = Process.GetProcesses().FirstOrDefault(x => new Regex(TargetWindow, RegexOptions.Compiled).Match(x.MainWindowTitle).Success).MainWindowHandle;
+
+			if (GameWindow != IntPtr.Zero) {
+				Haax.SetForegroundWindow(GameWindow);
+				//TODO: add some more functionality, like highliting?
+			} else
+				MessageBox.Show("Can't find window!\nIs your app running?", "No Match", System.Windows.MessageBoxButton.OK, MessageBoxImage.Warning);
 		}
 	}
 }

@@ -4,9 +4,7 @@
   "TargetTitle": "Calcula.*",
   "HotKey": {
     "KeyList": [
-      65,
-      83,
-      68
+      114
     ],
     "isDown": false
   }

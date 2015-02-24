@@ -29,44 +29,68 @@ namespace WPF_Crosshair {
 		private Timer updateTimer = null;
 		private AsyncGlobalShortcuts hotKeys = new AsyncGlobalShortcuts();
 
-		//private System.Windows.Forms.NotifyIcon TrayIcon = null;
+		private System.Windows.Forms.NotifyIcon TrayIcon = null;
+		
 
-		private MainModel test;
+		private MainModel mainModel;
 
 		public MainWindow() {
 			InitializeComponent();
 
+			mainModel = new MainModel(this);
 
-			test = new MainModel(this);
+			buildTray();
 
 			updateTimer = new Timer(1000);
 			updateTimer.AutoReset = true;
 			updateTimer.Enabled = true;
 
-			updateTimer.Elapsed += test.Update;
+			updateTimer.Elapsed += (o, e) => {
+				if (!mainModel.IsFocused)
+					TrayIcon.Icon = WPF_Crosshair.Properties.Resources.paused;
+				else {
+					if (mainModel.IsEnabled)
+						TrayIcon.Icon = WPF_Crosshair.Properties.Resources.on;
+					else
+						TrayIcon.Icon = WPF_Crosshair.Properties.Resources.off;
+				}
 
-			Options op = new Options();
-			op.Show();
+			};
+			updateTimer.Elapsed += mainModel.Update;
+
+			hotKeys.KeyPressed += hotKeys_KeyPressed;
 
 			updateTimer.Start();
 
 		}
 
+		void hotKeys_KeyPressed(object sender, KeyPressedEventArgs e) {
+			if (e.Key == Configs.convertTo<HotKey>(Configs.Properties["HotKey"])) {
+				toggleApp();
+			}
+		}
+
 		private void buildTray() {
-			/*TrayIcon = new System.Windows.Forms.NotifyIcon();
+			TrayIcon = new System.Windows.Forms.NotifyIcon();
 			TrayIcon.Icon = WPF_Crosshair.Properties.Resources.on;
 			TrayIcon.Visible = true;
 			TrayIcon.ContextMenu = new System.Windows.Forms.ContextMenu();
 
-			var enabledContext = new System.Windows.Forms.MenuItem("Enable", (o, e) => { 
-				null; 
+			var enabledContext = new System.Windows.Forms.MenuItem("Enable", (o, e) => {
+				toggleApp();				
 			});
 
 			var exitContext = new System.Windows.Forms.MenuItem("Exit", (o, e) => {	
 				Application.Current.Shutdown();	
 			});
 
-			var optionsContext = new System.Windows.Forms.MenuItem("Options", OptionsContext_Click);
+			var optionsContext = new System.Windows.Forms.MenuItem("Options", (o, e) => {
+				Options op = new Options();
+				op.Closed += (obj, ev) => {
+					tryLoadImage();
+				};
+				op.Show();
+			});
 
 
 			TrayIcon.ContextMenu.MenuItems.Add(enabledContext);
@@ -74,8 +98,30 @@ namespace WPF_Crosshair {
 			TrayIcon.ContextMenu.MenuItems.Add(new System.Windows.Forms.MenuItem("-"));
 			TrayIcon.ContextMenu.MenuItems.Add(exitContext);
 
-			TrayIcon.DoubleClick += (o, e) => { ToggleThing(); };
-			 */
+			TrayIcon.DoubleClick += (o, e) => {
+				toggleApp();
+			};
+
+		}
+
+		private void toggleApp() {
+			mainModel.IsEnabled = !mainModel.IsEnabled;
+			if (mainModel.IsEnabled)
+				TrayIcon.Icon = WPF_Crosshair.Properties.Resources.on;
+			else
+				TrayIcon.Icon = WPF_Crosshair.Properties.Resources.off;				
+		}
+
+		private void tryLoadImage() {
+			try {
+				mainModel.LoadImage(Configs.Properties["ImagePath"] as String);			
+			} catch (FileLoadException) {
+				System.Windows.MessageBox.Show("Crosshair failed to load, is it corrupted?", "Failed to load", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			} catch (FileNotFoundException) {
+				System.Windows.MessageBox.Show("Crosshair file not found.", "File not found", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
 		}
 	}
 

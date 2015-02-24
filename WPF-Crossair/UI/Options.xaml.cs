@@ -24,7 +24,6 @@ namespace WPF_Crosshair {
 
 		OptionsModel model;
 
-
 		public Options() {
 			InitializeComponent();
 

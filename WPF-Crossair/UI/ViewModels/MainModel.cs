@@ -23,11 +23,13 @@ namespace WPF_Crosshair {
 		public bool TopMost { get { return GetProp<bool>(); } set { SetProp(value); } }
 		public bool IsEnabled { get { return GetProp<bool>(); } set { SetProp(value); } }
 
+		public bool IsFocused { get; private set; }
+		public bool HasWindow { get; private set; }
+
 
 		private Regex windowRegex = null;
 		private MainWindow mainWindow = null;
-		private bool isFocused = false;
-		private bool hasWindow = false;
+
 
 		public MainModel(MainWindow win) {
 			String regex = Configs.Properties["TargetTitle"] as String;
@@ -63,15 +65,15 @@ namespace WPF_Crosshair {
 			try {
 				GameWindow = Process.GetProcesses().FirstOrDefault(x => windowRegex.Match(x.MainWindowTitle).Success).MainWindowHandle;
 				if (GameWindow == Haax.GetForegroundWindow()) {
-					isFocused = true;
-					hasWindow = true;
+					IsFocused = true;
+					HasWindow = true;
 				} else {
-					hasWindow = true;
-					isFocused = false;
+					HasWindow = true;
+					IsFocused = false;
 				}
 			} catch (System.NullReferenceException) {
-				isFocused = false;
-				hasWindow = false;
+				IsFocused = false;
+				HasWindow = false;
 				Opacity = 0;
 				//System.Diagnostics.Trace.WriteLine("Window:0, Focus:0");
 				return;
@@ -81,7 +83,7 @@ namespace WPF_Crosshair {
 			Haax.GetWindowRect(GameWindow, ref tempSize);
 
 
-			if (isFocused)
+			if (IsFocused)
 				Opacity = 100;
 			else
 				Opacity = 0;
@@ -118,19 +120,6 @@ namespace WPF_Crosshair {
 			}
 
 		}
-
-
-		public void focusTargetWindo() {
-			IntPtr GameWindow = IntPtr.Zero;
-			GameWindow = Process.GetProcesses().FirstOrDefault(x => windowRegex.Match(x.MainWindowTitle).Success).MainWindowHandle;
-
-			if (GameWindow != IntPtr.Zero) {
-				Haax.SetForegroundWindow(GameWindow);
-				//TODO: add some more functionality, like highliting?
-			} else
-				MessageBox.Show("Can't find window!\nIs your app running?", "No Match", System.Windows.MessageBoxButton.OK, MessageBoxImage.Warning);
-		}
-
 
 		public void setWindowTitleRegex(String title) {
 			windowRegex = new Regex(title, RegexOptions.Compiled);
