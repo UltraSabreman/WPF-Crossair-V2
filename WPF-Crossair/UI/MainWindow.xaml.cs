@@ -29,7 +29,7 @@ namespace WPF_Crosshair {
 		private Timer updateTimer = null;
 		private AsyncGlobalShortcuts hotKeys = new AsyncGlobalShortcuts();
 
-		private System.Windows.Forms.NotifyIcon TrayIcon = null;
+		//private System.Windows.Forms.NotifyIcon TrayIcon = null;
 
 		private MainModel test;
 

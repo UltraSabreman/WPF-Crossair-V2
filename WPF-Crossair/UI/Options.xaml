@@ -14,7 +14,7 @@
 							<Border Background="White" BorderBrush="#FF7D8683" BorderThickness="1"/>
 							<ScrollViewer x:Name="PART_ContentHost" Margin="5,0,0,0" VerticalAlignment="Center" />
 							<Label Margin="5,0,0,0" x:Name="WaterMarkLabel" Content="{TemplateBinding Tag}" VerticalAlignment="Center"
-                               Visibility="Collapsed" Foreground="Gray" FontFamily="Arial"/>
+                               Visibility="Collapsed" Foreground="Gray" FontFamily="Arial" />
 						</Grid>
 						<ControlTemplate.Triggers>
 							<MultiTrigger>

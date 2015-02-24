@@ -11,10 +11,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using System.Windows.Forms;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.IO;
+using System.Windows.Forms;
 
 namespace WPF_Crosshair {
 	/// <summary>
@@ -36,12 +36,12 @@ namespace WPF_Crosshair {
 			
 			FilePath.Text = Configs.Properties["ImagePath"] as String;
 			HotKey key = Configs.convertTo<HotKey>(Configs.Properties["HotKey"]);
-			/*if (key == null)
-				ToggleBind.keyBind = new List<Keys>();
+			if (key == null)
+				ToggleBind.KeyBind = new List<Keys>();
 			else
-				ToggleBind.keyBind = key.KeyList;*/
+				ToggleBind.KeyBind = key.KeyList;
 
-			//ToggleBind.updateText();
+			ToggleBind.updateText();
 			ExitWith.IsChecked = (bool) Configs.Properties["ExitWithProgram"];
 			TargetWindow.Text = Configs.Properties["TargetTitle"] as String;
 
@@ -61,12 +61,12 @@ namespace WPF_Crosshair {
 
 			FilePath.Text = Configs.Properties["ImagePath"] as String;
 			HotKey key = Configs.convertTo<HotKey>(Configs.Properties["HotKey"]);
-			/*if (key == null)
-				ToggleBind.keyBind = new List<Keys>();
+			if (key == null)
+				ToggleBind.KeyBind = new List<Keys>();
 			else
-				ToggleBind.keyBind = key.KeyList;*/
+				ToggleBind.KeyBind = key.KeyList;
 
-			//ToggleBind.updateText();
+			ToggleBind.updateText();
 			ExitWith.IsChecked = (bool)Configs.Properties["ExitWithProgram"];
 			TargetWindow.Text = Configs.Properties["TargetTitle"] as String;
 		}
@@ -85,7 +85,7 @@ namespace WPF_Crosshair {
 			}
 
 			Configs.Properties["ImagePath"] = FilePath.Text;
-			//Configs.Properties["HotKey"] = new HotKey(ToggleBind.keyBind);
+			Configs.Properties["HotKey"] = new HotKey(ToggleBind.KeyBind);
 			Configs.Properties["ExitWithProgram"] = ExitWith.IsChecked;
 			Configs.Properties["TargetTitle"] = TargetWindow.Text;
 

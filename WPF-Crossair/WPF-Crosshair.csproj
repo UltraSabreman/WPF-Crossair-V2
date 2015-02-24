@@ -62,7 +62,6 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -82,9 +81,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utility\AsyncGlobalShortcuts.cs" />
-    <Compile Include="UI\Controls\BindButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Utility\Config.cs" />
     <Compile Include="Utility\Haax.cs" />
     <Compile Include="UI\MainWindow.xaml.cs">
@@ -146,6 +142,9 @@
       <Project>{7165ef0a-1492-4f89-959a-f208fc3c4ae9}</Project>
       <Name>BindButton</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UI\Controls\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
