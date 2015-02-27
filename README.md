@@ -3,16 +3,8 @@ Crosshair Loader V2
 
 This is version 2 of my crosshair loader. It comes pre-set with a basic crosshair and preconfigured to work with planetside 2.
 
-*Note*: This project is currently undergoing a re-write;
-
 TODO:
 -----
- + Move All reticule logic to model
- + Convert options to WPF
- + Convert bind button to WPF control.
- + Add a (wpf?) tray icon
- + Add Detailed logging
- + Add comprehensive error handling.
  + Make it less shit
 
 Features
