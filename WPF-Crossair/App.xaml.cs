@@ -20,7 +20,8 @@ namespace WPF_Crosshair {
 
 		public App() {
 
-			AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(resolveDll);
+			AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(resolveJson);
+			//AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(resolveButton);
 #if !DEBUG
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(ErrorHandler);
 #endif
@@ -75,9 +76,17 @@ namespace WPF_Crosshair {
 			PrintLine(line.ToString());
 		}
 
-	
-		 static Assembly resolveDll(object sender, ResolveEventArgs args) {
+
+		static Assembly resolveJson(object sender, ResolveEventArgs args) {
 			 using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("WPF_Crosshair.Resources.Newtonsoft.Json.dll")) {
+				byte[] assemblyData = new byte[stream.Length];
+				stream.Read(assemblyData, 0, assemblyData.Length);
+				return Assembly.Load(assemblyData);
+			}
+		}
+
+		static Assembly resolveButton(object sender, ResolveEventArgs args) {
+			using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BindButton.Bin.Debug.BindButton.dll")) {
 				byte[] assemblyData = new byte[stream.Length];
 				stream.Read(assemblyData, 0, assemblyData.Length);
 				return Assembly.Load(assemblyData);
