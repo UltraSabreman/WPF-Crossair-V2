@@ -1,0 +1,12 @@
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\BindButton\bin\Release\BindButton.dll
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\BindButton\bin\Release\BindButton.pdb
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\BindButton\obj\Release\BindButton.csprojResolveAssemblyReference.cache
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\BindButton\obj\Release\GeneratedInternalTypeHelper.g.cs
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\BindButton\obj\Release\BindButton_MarkupCompile.cache
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\BindButton\obj\Release\BindButton_MarkupCompile.lref
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\BindButton\obj\Release\Themes\Generic.baml
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\BindButton\obj\Release\BindButton.g.resources
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\BindButton\obj\Release\BindButton.Properties.Resources.resources
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\BindButton\obj\Release\BindButton.csproj.GenerateResource.Cache
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\BindButton\obj\Release\BindButton.dll
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\BindButton\obj\Release\BindButton.pdb

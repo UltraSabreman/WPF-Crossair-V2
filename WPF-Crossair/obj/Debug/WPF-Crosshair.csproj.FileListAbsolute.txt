@@ -31,7 +31,6 @@ C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossa
 C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\bin\Debug\WPF-Crossair.pdb
 C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\bin\Debug\BindButton.dll
 C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\bin\Debug\Newtonsoft.Json.dll
-C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\bin\Debug\BindButton.pdb
 C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\obj\Debug\WPF-Crosshair.csprojResolveAssemblyReference.cache
 C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\obj\Debug\UI\MainWindow.baml
 C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\obj\Debug\UI\MainWindow.g.cs

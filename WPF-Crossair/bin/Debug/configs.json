@@ -1,7 +1,7 @@
 {
-  "ExitWithProgram": true,
+  "ExitWithProgram": false,
   "ImagePath": "ret.png",
-  "TargetTitle": "Calcula.*",
+  "TargetTitle": "Calc.*",
   "HotKey": {
     "KeyList": [
       115

@@ -44,3 +44,5 @@ C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossa
 C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\obj\Release\WPF-Crosshair.csproj.GenerateResource.Cache
 C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\obj\Release\WPF-Crossair.exe
 C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\obj\Release\WPF-Crossair.pdb
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\obj\Release\UI\MainWindow.baml
+C:\Users\Andrey\Documents\Visual Studio 2013\Projects\WPF-Crossair-V2\WPF-Crossair\obj\Release\UI\MainWindow.g.cs
