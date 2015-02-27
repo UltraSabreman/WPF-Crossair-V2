@@ -44,14 +44,14 @@
 			</Grid>
 		</GroupBox>
 		<CheckBox x:Name="ExitWith" Content="Exit With Program" IsChecked="{Binding ExitWithProgram}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,125,0,0" />
-		<TextBox Tag="Set the target Window (you can use regex)."  x:Name="TargetWindow" HorizontalAlignment="Left" Height="23" Margin="10,69,0,0" TextWrapping="Wrap" 
+		<TextBox Tag="Set the target Window (you can use regex)." ToolTip="Set target window name" x:Name="TargetWindow" HorizontalAlignment="Left" Height="23" Margin="10,69,0,0" TextWrapping="Wrap" 
 				 Text="{Binding TargetWindow}" VerticalAlignment="Top" Width="289" Style="{DynamicResource TextBoxStyle1}"  />
 		<Button x:Name="CancelButton" Content="Cancel" HorizontalAlignment="Left" Width="75" Margin="260,0,0,10" Height="20" VerticalAlignment="Bottom"/>
 		<Button x:Name="OkButton" Content="Ok" Margin="180,0,0,10" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75" />
-		<Button x:Name="ReloadButton" Content="Reload Crosshair" Margin="10,0,0,10" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="97"/>
+		<Button x:Name="ReloadButton" Content="Reload Settings" Margin="10,0,0,10" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="97"/>
 		<TextBox Tag="Crosshair File Path"  x:Name="FilePath" HorizontalAlignment="Left" Height="23" Margin="10,97,0,0"
 			Text="{Binding FilePath}" TextWrapping="NoWrap" VerticalAlignment="Top" Width="289" Style="{DynamicResource TextBoxStyle1}" />
-		<Button x:Name="BrowseButton" Content="..." Margin="304,97,0,0" Height="23" VerticalAlignment="Top" HorizontalAlignment="Left" Width="34"/>
-		<Button x:Name="TestTarget"  Content="Test" HorizontalAlignment="Left" VerticalAlignment="Top" Width="34" Margin="304,69,0,0" Height="23"/>
+		<Button x:Name="BrowseButton" Content="..." ToolTip="Browse" Margin="304,97,0,0" Height="23" VerticalAlignment="Top" HorizontalAlignment="Left" Width="34"/>
+		<Button x:Name="TestTarget"  Content="Test" ToolTip="Try to bring target window to front" HorizontalAlignment="Left" VerticalAlignment="Top" Width="34" Margin="304,69,0,0" Height="23"/>
 	</Grid>
 </Window>

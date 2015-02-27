@@ -39,14 +39,30 @@ namespace WPF_Crosshair {
 				//Trys to write the default settings.
 				try { 
 					WriteConfigs(); 
-				} catch (Exception) { }
+				} catch (Exception) {
+					//well this failed terribly. At this point
+					//there's not much we can do, so we throw a io error 
+					//and hope for the best.
+					throw new Exception("Failed to read AND write to configs. Check premissions");
+				}
 			} finally {
 				Initilize();
 			}
 		}
 
+		public static Object get(String key) {
+			return (Configs.Settings.ContainsKey(key) ? Configs.Settings[key] : null);
 
-		public static T convertTo<T>(Object o) {
+		}
+
+		public static void set(String key, Object Value) {
+			Configs.Settings[key] = Value;
+			if (Configs.AutoSave)
+				WriteConfigs();
+		}
+
+		public static T getAs<T>(String key) {
+			Object o = get(key);
 			try {
 				Newtonsoft.Json.Linq.JObject jo = (Newtonsoft.Json.Linq.JObject)o;
 				return (T)jo.ToObject(typeof(T));
@@ -55,8 +71,25 @@ namespace WPF_Crosshair {
 			}
 		}
 
+		public static void setAs<T>(String key, T Value) {
+			Configs.Settings[key] = Value;
+			if (Configs.AutoSave)
+				WriteConfigs();
+		}
+
+		public static bool remove(String key) {
+			if (Configs.Settings.ContainsKey(key)) {
+				Configs.Settings.Remove(key);
+				if (Configs.AutoSave)
+					WriteConfigs();
+				return true;
+			}
+			return false;
+		}
+
+
 		//Reads the config file
-		private static void ReadConfigs() {
+		public static void ReadConfigs() {
 			using (StreamReader rd = new StreamReader(path)) {
 				//Replace with your preffered method of de-serialization
 				ConfigMap temp = new JsonSerializer().Deserialize(rd, typeof(ConfigMap)) as ConfigMap;
@@ -68,7 +101,7 @@ namespace WPF_Crosshair {
 		}
 		
 		//writes the config file.
-		private static void WriteConfigs() {
+		public static void WriteConfigs() {
 			using (StreamWriter wr = new StreamWriter(path))
 				//Replace with your preffered method of serialization
 				JsonSerializer.Create(new JsonSerializerSettings() { Formatting = Newtonsoft.Json.Formatting.Indented }).Serialize(wr, Settings);
@@ -82,57 +115,5 @@ namespace WPF_Crosshair {
 		
 		}
 		
-		/// <summary>
-		/// This class acts as a gateway to our settings. This should be the only thing (And it's instance)
-		/// that's exposed in the config class. All interaction with configs should happen only through it.
-		/// </summary>
-		public sealed class ConfigurationPropertyIndexer {
-			/// <summary>
-			/// Access a spesifed config to assing to it or read it.
-			/// On assingment, will create the config if it doesn't exhist and if
-			/// autodave is set to true, it will write to the file.
-			/// </summary>
-			/// <param name="name">The Key</param>
-			/// <returns>The config object</returns>
-			public object this[string name] {
-				get {
-					return (Configs.Settings.ContainsKey(name) ? Configs.Settings[name] : null);
-				}
-				set {
-					Configs.Settings[name] = value;
-					if (Configs.AutoSave)
-						Save();
-				}
-			}
-			
-			/// <summary>
-			/// Remove the spesifed config.
-			/// </summary>
-			/// <param name="name">The Key</param>
-			/// <returns>False: the key did not exhist.
-			/// True: The key was removed</returns>
-			public bool RemoveConfig(String name) {
-				if (Configs.Settings.ContainsKey(name)) {
-					Configs.Settings.Remove(name);
-					if (Configs.AutoSave)
-						Save();
-					return true;
-				}
-				return false;
-			}
-			
-			/// <summary>
-			/// Saves the configs to file.
-			/// </summary>
-			public void Save() {
-				Configs.WriteConfigs();
-			}
-		}
-		
-		/// <summary>
-		/// Gives read/write access to the configurations.
-		/// This should be the only public member in the config class.
-		/// </summary>
-		public static ConfigurationPropertyIndexer Properties = new ConfigurationPropertyIndexer();
 	}
 }

@@ -21,9 +21,6 @@ namespace WPF_Crosshair {
 		public delegate void Accepted();
 		public event Accepted OnAccept;
 
-		//TODO: Handle file exceptions
-		//TODO: Handle binds + special cases better
-		//TODO: Handle test button
 
 		public OptionsModel(Options b) {
 			options = b;
@@ -43,25 +40,25 @@ namespace WPF_Crosshair {
 		}
 
 		private void init() {
-			FilePath = Configs.Properties["ImagePath"] as String;
-			HotKey key = Configs.convertTo<HotKey>(Configs.Properties["HotKey"]);
+			FilePath = Configs.getAs<String>("ImagePath");
+			HotKey key = Configs.getAs<HotKey>("HotKey");
 			if (key == null)
 				options.ToggleBind.KeyBind = new List<Keys>();
 			else
 				options.ToggleBind.KeyBind = key.KeyList;
 
 			options.ToggleBind.updateText();
-			ExitWithProgram = (bool)Configs.Properties["ExitWithProgram"];
-			TargetWindow = Configs.Properties["TargetTitle"] as String;
+			ExitWithProgram = Configs.getAs<bool>("ExitWithProgram");
+			TargetWindow = Configs.getAs<String>("TargetTitle");
 		}
 
 		private void OkButton_Click(object sender, RoutedEventArgs e) {
 
-			Configs.Properties["ImagePath"] = FilePath;
-			Configs.Properties["HotKey"] = new HotKey(options.ToggleBind.KeyBind);
-			Configs.Properties["ExitWithProgram"] = ExitWithProgram;
-			Configs.Properties["TargetTitle"] = TargetWindow;
-			Configs.Properties.Save();
+			Configs.set("ImagePath", FilePath);
+			Configs.set("HotKey", new HotKey(options.ToggleBind.KeyBind));
+			Configs.set("ExitWithProgram", ExitWithProgram);
+			Configs.set("TargetTitle", TargetWindow);
+			Configs.WriteConfigs();
 
 			if (OnAccept != null)
 				OnAccept();

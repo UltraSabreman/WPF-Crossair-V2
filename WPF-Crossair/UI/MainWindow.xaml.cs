@@ -58,6 +58,7 @@ namespace WPF_Crosshair {
 			};
 			updateTimer.Elapsed += mainModel.Update;
 
+			hotKeys.RegisterHotKey(Configs.getAs<HotKey>("HotKey"));
 			hotKeys.KeyPressed += hotKeys_KeyPressed;
 
 			updateTimer.Start();
@@ -65,7 +66,7 @@ namespace WPF_Crosshair {
 		}
 
 		void hotKeys_KeyPressed(object sender, KeyPressedEventArgs e) {
-			if (e.Key == Configs.convertTo<HotKey>(Configs.Properties["HotKey"])) {
+			if (e.Key == Configs.getAs<HotKey>("HotKey")) {
 				toggleApp();
 			}
 		}
@@ -85,11 +86,7 @@ namespace WPF_Crosshair {
 			});
 
 			var optionsContext = new System.Windows.Forms.MenuItem("Options", (o, e) => {
-				Options op = new Options();
-				op.Closed += (obj, ev) => {
-					tryLoadImage();
-				};
-				op.Show();
+				showOptions();
 			});
 
 
@@ -104,6 +101,17 @@ namespace WPF_Crosshair {
 
 		}
 
+		private void showOptions() {
+			hotKeys.UnregisterHotKey(Configs.getAs<HotKey>("HotKey"));
+			Options op = new Options();
+			op.Closed += (obj, ev) => {
+				hotKeys.RegisterHotKey(Configs.getAs<HotKey>("HotKey"));
+				if (!mainModel.tryLoadImage())
+					showOptions();
+			};
+			op.Show();
+		}
+
 		private void toggleApp() {
 			mainModel.IsEnabled = !mainModel.IsEnabled;
 			if (mainModel.IsEnabled)
@@ -112,17 +120,6 @@ namespace WPF_Crosshair {
 				TrayIcon.Icon = WPF_Crosshair.Properties.Resources.off;				
 		}
 
-		private void tryLoadImage() {
-			try {
-				mainModel.LoadImage(Configs.Properties["ImagePath"] as String);			
-			} catch (FileLoadException) {
-				System.Windows.MessageBox.Show("Crosshair failed to load, is it corrupted?", "Failed to load", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
-				return;
-			} catch (FileNotFoundException) {
-				System.Windows.MessageBox.Show("Crosshair file not found.", "File not found", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
-				return;
-			}
-		}
 	}
 
 }

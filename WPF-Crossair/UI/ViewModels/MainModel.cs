@@ -32,7 +32,7 @@ namespace WPF_Crosshair {
 
 
 		public MainModel(MainWindow win) {
-			String regex = Configs.Properties["TargetTitle"] as String;
+			String regex = Configs.getAs<String>("TargetTitle");
 			if (regex != null)
 				windowRegex = new Regex(regex, RegexOptions.Compiled);
 
@@ -44,10 +44,8 @@ namespace WPF_Crosshair {
 			TopMost = true;
 
 
-			try {
-				LoadImage(Configs.Properties["ImagePath"] as String);
-			} catch (FileNotFoundException e) {
-				//TODO: handle file not found
+			if (!tryLoadImage()) {
+				
 			}
 
 			mainWindow.Show();
@@ -96,7 +94,21 @@ namespace WPF_Crosshair {
 		}
 
 
-		public bool LoadImage(String Path) {
+
+		public bool tryLoadImage() {
+			try {
+				LoadImage(Configs.getAs<String>("ImagePath"));
+			} catch (FileLoadException) {
+				var res = System.Windows.MessageBox.Show("Crosshair failed to load, is it corrupted?\n Press OK to pick another, Cancel to ignore.", "Failed to load", System.Windows.MessageBoxButton.OKCancel, MessageBoxImage.Error);
+				return res == MessageBoxResult.OK ? false : true;
+			} catch (FileNotFoundException) {
+				var res = System.Windows.MessageBox.Show("Crosshair file not found.\n Press OK to pick another, Cancel to ignore.", "File not found", System.Windows.MessageBoxButton.OKCancel, MessageBoxImage.Error);
+				return res == MessageBoxResult.OK ? false : true;
+			}
+			return true;
+		}
+
+		private bool LoadImage(String Path) {
 			Path = System.IO.Path.Combine(Environment.CurrentDirectory, Path);
 
 			if (!File.Exists(Path)) {
