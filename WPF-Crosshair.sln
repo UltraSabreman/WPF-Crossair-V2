@@ -1,9 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF-Crosshair", "WPF-Crossair\WPF-Crosshair.csproj", "{594DC331-2099-465A-9052-6ED2C1F404FA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7165EF0A-1492-4F89-959A-F208FC3C4AE9} = {7165EF0A-1492-4F89-959A-F208FC3C4AE9}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BindButton", "BindButton\BindButton.csproj", "{7165EF0A-1492-4F89-959A-F208FC3C4AE9}"
 EndProject

@@ -63,15 +63,16 @@ namespace WPF_Crosshair {
 
 		public static T getAs<T>(String key) {
 			Object o = get(key);
-			try {
-				Newtonsoft.Json.Linq.JObject jo = (Newtonsoft.Json.Linq.JObject)o;
-				return (T)jo.ToObject(typeof(T));
-			} catch (Exception) {
-				return (T)o;
-			}
-		}
+            if (o is Newtonsoft.Json.Linq.JObject) {
+                try {
+                    Newtonsoft.Json.Linq.JObject jo = (Newtonsoft.Json.Linq.JObject)o;
+                    return (T)jo.ToObject(typeof(T));
+                } catch (Exception) {}
+            }
+            return (T)o;
+        }
 
-		public static void setAs<T>(String key, T Value) {
+        public static void setAs<T>(String key, T Value) {
 			Configs.Settings[key] = Value;
 			if (Configs.AutoSave)
 				WriteConfigs();

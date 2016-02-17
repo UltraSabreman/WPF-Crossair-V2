@@ -63,10 +63,14 @@ namespace BindButton
 			escapeDelay.Elapsed += escape;
 			escapeDelay.Stop();
 
-			Click += OnClick;
+			//Click += OnClick;
 			KeyDown += OnKeyDown;
 			KeyUp += OnKeyUp;
-		}
+            //Mouse.Capture(this);
+            Mouse.AddMouseDownHandler(this, OnMouseDown);
+            Mouse.AddMouseUpHandler(this, OnMouseUp);
+            Mouse.AddMouseWheelHandler(this, OnMouseWheel);
+        }
 
 
 		/// <summary>
@@ -88,22 +92,56 @@ namespace BindButton
 		/// Resets the control to allow new input
 		/// </summary>
 		/// <param name="e"></param>
-		protected void OnClick(Object o, EventArgs e) {
-			tempKeys.Clear();
+		/*protected void OnClick(Object o, EventArgs e) {
+            if (!this.IsFocused) {
+                tempKeys.Clear();
 
-			controlString = "ESC to Cancel, Hold to Clear";
-			Dispatcher.Invoke(new Action(() => {
-				Focus();
-				Content = controlString;
-				this.UpdateLayout();
-			}));
-		}
+                controlString = "ESC to Cancel, Hold to Clear";
+                Dispatcher.Invoke(new Action(() => {
+                    Focus();
+                    Content = controlString;
+                    this.UpdateLayout();
+                }));
+            } else {
+                Console.WriteLine("sdfsfs");
+            }
+		}*/
 
-		/// <summary>
-		/// Updates the redered text with the bind, or approrpiate hint strings.
-		/// </summary>
-		/// <param name="tempOrNot">Whether to display the temp bind list or the actual bind</param>
-		public void updateText(bool tempOrNot = false) {
+        protected void OnMouseUp(Object o, MouseEventArgs e) {
+            e.Handled = false;
+            if (!this.IsFocused) {
+                tempKeys.Clear();
+
+                controlString = "ESC to Cancel, Hold to Clear";
+                Dispatcher.Invoke(new Action(() => {
+                    Focus();
+                    Content = controlString;
+                    this.UpdateLayout();
+                }));
+            } else {
+                //Console.WriteLine("sdfsfs");
+            }
+            Console.WriteLine("L: " + e.LeftButton + ", R: " + e.RightButton + ", B: " + e.XButton1 + ", F: " + e.XButton2 + ", Wheel: " + e.MiddleButton);
+        }
+
+        protected void OnMouseDown(Object o, MouseEventArgs e) {
+            e.Handled = false;
+            Console.WriteLine("----");
+            Console.WriteLine("L: " + e.LeftButton + ", R: " + e.RightButton + ", B: " + e.XButton1 + ", F: " + e.XButton2 + ", Wheel: " + e.MiddleButton);
+        }
+
+        protected void OnMouseWheel(Object o, MouseWheelEventArgs e) {
+            e.Handled = false;
+            Console.WriteLine("----");
+            Console.WriteLine("D: " + e.Delta + ", L: " + e.LeftButton + ", R: " + e.RightButton + ", B: " + e.XButton1 + ", F: " + e.XButton2 + ", Wheel: " + e.MiddleButton);
+        }
+
+
+        /// <summary>
+        /// Updates the redered text with the bind, or approrpiate hint strings.
+        /// </summary>
+        /// <param name="tempOrNot">Whether to display the temp bind list or the actual bind</param>
+        public void updateText(bool tempOrNot = false) {
 			List<Keys> temp = (tempOrNot ? tempKeys : keyBind);
 
 			controlString = "";
@@ -155,6 +193,7 @@ namespace BindButton
 		private Keys toFromKey(Key k) {
 			return (Keys)KeyInterop.VirtualKeyFromKey(k);
 		}
+
 
 		/// <summary>
 		/// Triggered on key release

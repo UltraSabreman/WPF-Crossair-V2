@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -43,6 +44,8 @@ namespace WPF_Crosshair {
 			IsEnabled = true;
 			TopMost = true;
 
+            Mouse.Capture(mainWindow);
+            Mouse.AddMouseDownHandler(mainWindow, OnMouseDown);
 
 			if (!tryLoadImage()) {
 				
@@ -52,30 +55,44 @@ namespace WPF_Crosshair {
 			//This has to happen after the window is visible (aka after show)
 			Haax.SetWindowExTransparent(new WindowInteropHelper(mainWindow).Handle);
 		}
+        protected void OnMouseDown(Object o, MouseEventArgs e) {
+            e.Handled = false;
+            Console.WriteLine("----");
+            Console.WriteLine("L: " + e.LeftButton + ", R: " + e.RightButton + ", B: " + e.XButton1 + ", F: " + e.XButton2 + ", Wheel: " + e.MiddleButton);
+        }
 
-		public void Update(Object o, EventArgs e) {
+        public void Update(Object o, EventArgs e) {
 			if (!IsEnabled || windowRegex == null || Reticule == null) {
 				Opacity = 0;
 				return; 
 			}
 			IntPtr GameWindow = IntPtr.Zero;
 
+            bool noWindow = false;
 			try {
-				GameWindow = Process.GetProcesses().FirstOrDefault(x => windowRegex.Match(x.MainWindowTitle).Success).MainWindowHandle;
-				if (GameWindow == Haax.GetForegroundWindow()) {
-					IsFocused = true;
-					HasWindow = true;
-				} else {
-					HasWindow = true;
-					IsFocused = false;
-				}
+                var TempWindow = Process.GetProcesses().FirstOrDefault(x => windowRegex.Match(x.MainWindowTitle).Success);
+                if (TempWindow == null) {
+                    noWindow = true;
+                } else {
+                    GameWindow = TempWindow.MainWindowHandle;
+                    if (GameWindow == Haax.GetForegroundWindow()) {
+                        IsFocused = true;
+                        HasWindow = true;
+                    } else {
+                        HasWindow = true;
+                        IsFocused = false;
+                    }
+                }
 			} catch (System.NullReferenceException) {
-				IsFocused = false;
-				HasWindow = false;
-				Opacity = 0;
-				//System.Diagnostics.Trace.WriteLine("Window:0, Focus:0");
-				return;
+                noWindow = true;
 			}
+            if (noWindow) {
+                IsFocused = false;
+                HasWindow = false;
+                Opacity = 0;
+                //System.Diagnostics.Trace.WriteLine("Window:0, Focus:0");
+                return;
+            }
 
 			Haax.RECT tempSize = new Haax.RECT();
 			Haax.GetWindowRect(GameWindow, ref tempSize);

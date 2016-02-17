@@ -16,14 +16,16 @@ namespace WPF_Crosshair {
 			OnPropertyChanged(property);
 		}
 		protected T GetProp<T>([CallerMemberName] string property = null) {
-			try {
-				return (T)propertyValues[property];
-			} catch (Exception) {
-				return default(T);
-			}
-		}
+            if (!String.IsNullOrEmpty(property) && propertyValues.ContainsKey(property)) {
+                try {
+                    return (T)propertyValues[property];
+                } catch (Exception) { }
+            }
 
-		protected void OnPropertyChanged(string propertyName) {
+            return default(T);
+        }
+
+        protected void OnPropertyChanged(string propertyName) {
 			PropertyChangedEventHandler handler = PropertyChanged;
 			if (handler != null)
 				handler(this, new PropertyChangedEventArgs(propertyName));

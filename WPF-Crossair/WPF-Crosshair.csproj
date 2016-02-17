@@ -43,10 +43,6 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BindButton, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Resources\BindButton.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Resources\Newtonsoft.Json.dll</HintPath>
@@ -145,7 +141,13 @@
     <Folder Include="UI\Controls\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\BindButton.dll" />
+    <ProjectReference Include="..\BindButton\BindButton.csproj">
+      <Project>{7165ef0a-1492-4f89-959a-f208fc3c4ae9}</Project>
+      <Name>BindButton</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\BindButton.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterResolveReferences">
